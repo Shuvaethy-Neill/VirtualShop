@@ -31,19 +31,27 @@ public class Inventory {
         }
         else{
             int i = 0;
+            //System.out.println("product list size " + products.size());
             if(i>=products.size()) {
-                while (products.get(i).getId() != iProduct.getId()) {
+
+            }
+            else{
+                while (products.get(i).getId() != iProduct.getId() && i<products.size()-1) {
+                    //System.out.println("index is "+ i);
                     i++;
+                    //System.out.println("index is "+ i);
 
                 }
             }
 
             if(products.get(i).getId() == iProduct.getId()){
+                //System.out.println("product i am adding stock to is " + products.get(i).getName());
                 int tempStock = quantity.get(i);
                 tempStock += iStock;
                 quantity.set(i, tempStock);
             }
             else{
+                //System.out.println("The product is not in the list " + iProduct.getName());
                 products.add(iProduct);
                 quantity.add(iStock);
             }
@@ -53,7 +61,7 @@ public class Inventory {
     public void removeStock(int productID, int stockRemove){
         //This method removes a certain amount of stock from a product
         int i = 0;
-        while(products.get(i).getId() != productID && i<products.size()){
+        while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
         int tempStock = quantity.get(i);
@@ -65,7 +73,7 @@ public class Inventory {
     }
     public void productInfo(int productID){
         int i = 0;
-        while(products.get(i).getId() != productID && i<products.size()){
+        while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
         String productName = products.get(i).getName();
@@ -77,7 +85,7 @@ public class Inventory {
     }
     public String getProductName(int productID){
         int i = 0;
-        while(products.get(i).getId() != productID && i<products.size()){
+        while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
         String productName = products.get(i).getName();
@@ -85,7 +93,7 @@ public class Inventory {
     }
     public int getPrice(int productID){
         int i = 0;
-        while(products.get(i).getId() != productID && i<products.size()){
+        while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
         int productPrice = quantity.get(i);

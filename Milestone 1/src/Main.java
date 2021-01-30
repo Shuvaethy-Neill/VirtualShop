@@ -6,13 +6,17 @@ public class Main {
         Inventory inventory = new Inventory();
 
         inventory.addStock(ball, 3);
-        inventory.addStock(ball, 3);
         inventory.addStock(triangle, 3);
-        inventory.removeStock(1,7);
-        inventory.addStock(computer,1);
 
-        inventory.productInfo(1);
-        inventory.productInfo(2);
-        inventory.productInfo(3);
+        inventory.addStock(computer,1);
+        inventory.addStock(triangle, 2);
+        inventory.addStock(computer,4);
+        int ballStock = inventory.getStock(1);
+        int triangleStock = inventory.getStock(2);
+        int computerStock = inventory.getStock(3);
+        String productName = inventory.getProductName(2);
+        System.out.println("ball stock: "+ ballStock +" Triangle Stock: "+ triangleStock +
+                " Computer Stock: " + computerStock);
+        System.out.println(productName);
     }
 }
