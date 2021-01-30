@@ -75,5 +75,21 @@ public class Inventory {
                 ", Stock: " + Integer.toString(productStock)+
                 ", Price: " + Double.toString(productPrice));
     }
+    public String getProductName(int productID){
+        int i = 0;
+        while(products.get(i).getId() != productID && i<products.size()){
+            i++;
+        }
+        String productName = products.get(i).getName();
+        return productName;
+    }
+    public int getPrice(int productID){
+        int i = 0;
+        while(products.get(i).getId() != productID && i<products.size()){
+            i++;
+        }
+        int productPrice = quantity.get(i);
+        return productPrice;
+    }
 }
 
