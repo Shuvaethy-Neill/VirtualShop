@@ -91,13 +91,12 @@ public class Inventory {
         String productName = products.get(i).getName();
         return productName;
     }
-    public int getPrice(int productID){
+    public double getPrice(int productID){
         int i = 0;
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
-        int productPrice = quantity.get(i);
+        double productPrice = products.get(i).getPrice();
         return productPrice;
     }
 }
-
