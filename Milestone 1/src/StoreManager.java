@@ -13,14 +13,9 @@ public class StoreManager {
         managerInventory = inv;
     }
 
-    // get product's available stock
-    public int getInventoryStock(int productID){
+    // check available stock of a product
+    public int checkInventoryStock(int productID){
         return managerInventory.getStock(productID);
-    }
-
-    // remove a certain amount from the product's stock
-    public void removeInventoryStock(int productID, int stockRemove) {
-        managerInventory.removeStock(productID, stockRemove);
     }
 
     // takes an order in the form of a 2D array ([ProductID1, quantity], [..,..]...) and completes the transaction
@@ -36,7 +31,7 @@ public class StoreManager {
             int quantity = order[i][1];
 
             // insufficient stock for quantity being purchased (transaction fails)
-            if (quantity > getInventoryStock(productID)) {
+            if (quantity > checkInventoryStock(productID)) {
                 System.out.println("Sorry there is not enough stock for a product you were looking to purchase!");
                 return -1;
             }
@@ -47,7 +42,7 @@ public class StoreManager {
             int productID = order[i][0];
             int quantity = order[i][1];
             total += (quantity * managerInventory.getPrice(productID));
-            removeInventoryStock(productID, quantity);
+            managerInventory.removeStock(productID, quantity);
 
         }
         return Math.round(total);
