@@ -25,9 +25,9 @@ public class Main {
                 ", Computer Stock: " + computerStock);
         System.out.println(productName);
 
-        managerInventory.productInfo(1);
-        managerInventory.productInfo(2);
-        managerInventory.productInfo(3);
+        managerInventory.getStock(1);
+        managerInventory.getStock(2);
+        managerInventory.getStock(3);
 
         // Create an order as a 2D array
         int[][] order1 = {{p1.getId(), 3}, {p2.getId(), 1}, {p3.getId(), 2}};
@@ -36,9 +36,9 @@ public class Main {
 
         System.out.println("Your total comes to: " + testStore.transaction(order1));
 
-        managerInventory.productInfo(1);
-        managerInventory.productInfo(2);
-        managerInventory.productInfo(3);
+        managerInventory.getPrice(1);
+        managerInventory.getPrice(2);
+        managerInventory.getPrice(3);
 
         // Create an order to test the out of stock case
         int[][] order2 = {{p1.getId(), 1}, {p2.getId(), 1}, {p3.getId(), 2}};
