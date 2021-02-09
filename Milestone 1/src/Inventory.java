@@ -136,7 +136,7 @@ public class Inventory {
         }
         double productPrice = products.get(i).getPrice();
         if(products.get(i).getId() != productID){
-            productPrice = 0.0;
+            productPrice = -1;
         }
 
 
