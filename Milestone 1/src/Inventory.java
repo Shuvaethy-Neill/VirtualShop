@@ -29,19 +29,23 @@ public class Inventory {
     /**
      * Gets stock on product given product id
      * @param productId
-     * @return Returns the stock
+     * @return the stock available for a product
      */
-    public int getStock(int productId){
+    public int getStock(int productId) {
         int stock = 0;
-        if(products.isEmpty() == false) {
+        if (products.isEmpty() == false) {
             int i = 0;
-            while(products.get(i).getId() != productId && i<products.size()){
+            while (products.get(i).getId() != productId && i < products.size()-1) {
                 i++;
             }
             stock = quantity.get(i);
+
+            // If product does not exist return -1
+            if (products.get(i).getId() != productId) {
+                stock = -1;
+            }
         }
         return stock;
-
     }
 
     /**
@@ -58,14 +62,13 @@ public class Inventory {
         }
         else{
             int i = 0;
-            
+
             if(i>=products.size()) {
 
             }
             else{
                 while (products.get(i).getId() != product.getId() && i<products.size()-1) {
                     i++;
-
                 }
             }
 
@@ -75,10 +78,10 @@ public class Inventory {
                 quantity.set(i, tempStock);
             }
             else{
+                // If product does not exist then add it
                 products.add(product);
                 quantity.add(stock);
             }
-
         }
     }
 
@@ -86,6 +89,7 @@ public class Inventory {
      *  Removes specific amount of a product's stock based on product ID
      * @param productID
      * @param stockRemove
+     * @return boolean value true for successful remove or false if product does not exist
      */
     public boolean removeStock(int productID, int stockRemove){
         boolean isInStock = false;
@@ -93,7 +97,7 @@ public class Inventory {
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
-        // will return true if the product being removed is in stock
+        // Will return true if the product being removed is in stock
         if(products.get(i).getId() == productID){
             isInStock = true;
         }
@@ -109,7 +113,7 @@ public class Inventory {
     /**
      *
      * @param productID
-     * @return Returns name of a product given a product id
+     * @return name of a product given a product id
      */
     public String getProductName(int productID){
         int i = 0;
@@ -117,6 +121,8 @@ public class Inventory {
             i++;
         }
         String productName = products.get(i).getName();
+        
+        // If the product does not exist return null
         if(products.get(i).getId() != productID){
             productName = null;
         }
@@ -127,7 +133,7 @@ public class Inventory {
     /**
      *
      * @param productID
-     * @return Returns price of a product given a product id
+     * @return price of a product given a product id
      */
     public double getPrice(int productID){
         int i = 0;
@@ -135,18 +141,18 @@ public class Inventory {
             i++;
         }
         double productPrice = products.get(i).getPrice();
+
+        // If the product does not exist return -1
         if(products.get(i).getId() != productID){
-            productPrice = -1;
+            return -1;
         }
-
-
         return productPrice;
     }
 
     /**
      *
      * @param productID
-     * @return Returns product given ID
+     * @return product given ID
      */
     public Product getProduct(int productID){
         int i = 0;
@@ -154,11 +160,11 @@ public class Inventory {
             i++;
         }
         Product product = products.get(i);
+        
+        // If the product does not exist return null
         if(products.get(i).getId() != productID){
             product = null;
         }
-
         return product;
-
     }
 }
