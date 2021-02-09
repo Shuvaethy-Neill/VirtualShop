@@ -41,7 +41,7 @@ public class StoreManager {
      * @param order
      * @return total price for order purchase
      */
-    public double transaction(int [][] order){
+    public double orderTransaction(int [][] order){
         double total = 0;
 
         // Rows represents each product and quantity [ProductID1, quantity]
