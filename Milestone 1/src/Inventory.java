@@ -1,5 +1,6 @@
 // Written by: Andre Hazim 101141843
 // Partner: Shuvaethy Neill 101143478
+
 /**
  * This inventory class creates an inventory for the user to add products and/or
  * remove products. As well as get information about of products
@@ -28,7 +29,7 @@ public class Inventory {
     /**
      * Gets stock on product given product id
      * @param productId
-     * @return returns the stock
+     * @return Returns the stock
      */
     public int getStock(int productId){
         int stock = 0;
@@ -103,7 +104,7 @@ public class Inventory {
     /**
      *
      * @param productID
-     * @return Returns product name
+     * @return Returns name of a product given a product id
      */
     public String getProductName(int productID){
         int i = 0;
@@ -117,7 +118,7 @@ public class Inventory {
     /**
      *
      * @param productID
-     * @return Returns product price
+     * @return Returns price of a product given a product id
      */
     public double getPrice(int productID){
         int i = 0;
