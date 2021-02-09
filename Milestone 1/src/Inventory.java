@@ -58,7 +58,7 @@ public class Inventory {
         }
         else{
             int i = 0;
-            //System.out.println("product list size " + products.size());
+            
             if(i>=products.size()) {
 
             }
@@ -83,12 +83,12 @@ public class Inventory {
     }
 
     /**
-     *  Removes stock based on product ID
+     *  Removes specific amount of a product's stock based on product ID
      * @param productID
      * @param stockRemove
      */
     public void removeStock(int productID, int stockRemove){
-        //This method removes a certain amount of stock from a product
+        
         int i = 0;
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
