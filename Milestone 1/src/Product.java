@@ -1,5 +1,6 @@
 // Written by: Andre Hazim 101141843
 // Partner: Shuvaethy Neill 101143478
+
 /**
  * The Product class is a template for products that will be sold in the store
  * @author Andre Hazim
@@ -11,9 +12,9 @@
  */
 
 public class Product {
-    private String name;    //The name of the product
-    private int id;         //The id of the product
-    private double price;   //The price of the product
+    private String name;    // The name of the product
+    private int id;         // The id of the product
+    private double price;   // The price of the product
 
     public Product() {
         this("", 0, 0.0);
@@ -34,7 +35,7 @@ public class Product {
 
     /**
      * Get the name of the product
-     * @return
+     * @return name of the product
      */
     public String getName() {
         return name;
@@ -42,14 +43,14 @@ public class Product {
 
     /**
      * Get the id of the product
-     * @return
+     * @return product id
      */
     public int getId() {
         return id;
     }
     /**
      * Get the price of the product
-     * @return
+     * @return price of product
      */
     public double getPrice() {
         return price;
