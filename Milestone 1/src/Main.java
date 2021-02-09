@@ -51,8 +51,25 @@ public class Main {
 
         System.out.println(testStore.checkInventoryStock(p1));
 
-        Product p4 = new Product("ball", 101, 3.40);
+        System.out.println("Testing add stock method to see if it will add new product");
+        Product p4 = new Product("ball", 105, 3.40);
         managerInventory.addStock(p4,3);
-        System.out.println(testStore.checkInventoryStock(p1));
+        System.out.println(testStore.checkInventoryStock(p4));
+
+        managerInventory.addStock(p1,3);
+        System.out.println("Testing remove stock method to see if it will maintain stock at 0");
+        System.out.println(managerInventory.removeStock(101, 2));
+        System.out.println("Stock: " + testStore.checkInventoryStock(p1));
+        System.out.println(managerInventory.removeStock(101, 2));
+        System.out.println("Stock: " + testStore.checkInventoryStock(p1));
+        System.out.println(managerInventory.removeStock(101, 2));
+        System.out.println("Stock: " + testStore.checkInventoryStock(p1));
+
+        System.out.println("Testing inventory methods using a product id that does not exist");
+        System.out.println(managerInventory.removeStock(102, 1));
+        System.out.println(managerInventory.getProduct(102));
+        System.out.println(managerInventory.getProductName(102));
+        System.out.println(managerInventory.getPrice(102));
+        System.out.println(managerInventory.getStock(102));
     }
 }
