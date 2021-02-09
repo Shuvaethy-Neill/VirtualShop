@@ -117,6 +117,10 @@ public class Inventory {
             i++;
         }
         String productName = products.get(i).getName();
+        if(products.get(i).getId() != productID){
+            productName = null;
+        }
+
         return productName;
     }
 
@@ -131,6 +135,11 @@ public class Inventory {
             i++;
         }
         double productPrice = products.get(i).getPrice();
+        if(products.get(i).getId() != productID){
+            productPrice = 0.0;
+        }
+
+
         return productPrice;
     }
 
@@ -145,6 +154,10 @@ public class Inventory {
             i++;
         }
         Product product = products.get(i);
+        if(products.get(i).getId() != productID){
+            product = null;
+        }
+
         return product;
 
     }
