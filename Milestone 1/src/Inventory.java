@@ -128,4 +128,19 @@ public class Inventory {
         double productPrice = products.get(i).getPrice();
         return productPrice;
     }
+
+    /**
+     *
+     * @param productID
+     * @return Returns product given ID
+     */
+    public Product getProduct(int productID){
+        int i = 0;
+        while(products.get(i).getId() != productID && i<products.size()-1){
+            i++;
+        }
+        Product product = products.get(i);
+        return product;
+
+    }
 }
