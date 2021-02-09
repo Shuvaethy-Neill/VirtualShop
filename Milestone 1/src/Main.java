@@ -25,6 +25,8 @@ public class Main {
                 ", Computer Stock: " + computerStock);
         System.out.println(productName);
 
+        System.out.println(testStore.checkInventoryStock(p1));
+
         managerInventory.getStock(1);
         managerInventory.getStock(2);
         managerInventory.getStock(3);
@@ -34,7 +36,7 @@ public class Main {
 
         System.out.println("Order: " + Arrays.deepToString(order1));
 
-        System.out.println("Your total comes to: " + testStore.transaction(order1));
+        System.out.println("Your total comes to: " + testStore.orderTransaction(order1));
 
         managerInventory.getPrice(1);
         managerInventory.getPrice(2);
@@ -43,8 +45,14 @@ public class Main {
         // Create an order to test the out of stock case
         int[][] order2 = {{p1.getId(), 1}, {p2.getId(), 1}, {p3.getId(), 2}};
 
-        System.out.println("Order: " + Arrays.deepToString(order1));
+        System.out.println("Order: " + Arrays.deepToString(order2));
 
-        System.out.println("Your total comes to: " + testStore.transaction(order1));
+        System.out.println("Your total comes to: " + testStore.orderTransaction(order2));
+
+        System.out.println(testStore.checkInventoryStock(p1));
+
+        Product p4 = new Product("ball", 1, 3.40);
+        managerInventory.addStock(p4,3);
+        System.out.println(testStore.checkInventoryStock(p1));
     }
 }
