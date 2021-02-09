@@ -1,5 +1,15 @@
 //Andre Hazim 101141843
-//This class stores information about the items being sold by the store
+// Written by: Andre Hazim 101141843
+// Partner: Shuvaethy Neill 101143478
+/**
+ * The Product class is a template for products that will be sold in the store
+ * @author Andre Hazim
+ *
+ * @version 1.0
+ *
+ * @since 2021-02-06
+ *
+ */
 
 public class Product {
     private String name;    //The name of the product
@@ -33,7 +43,6 @@ public class Product {
     public int getId() {
         return id;
     }
-
     /**
      * Get the price of the product
      */

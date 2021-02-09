@@ -1,4 +1,5 @@
-//Andre Hazim 101141843
+// Written by: Andre Hazim 101141843
+// Partner: Shuvaethy Neill 101143478
 /**
  * This inventory class creates an inventory for the user to add products and/or
  * remove products. As well as get information about of products
