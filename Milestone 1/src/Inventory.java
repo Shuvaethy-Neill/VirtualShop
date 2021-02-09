@@ -87,11 +87,15 @@ public class Inventory {
      * @param productID
      * @param stockRemove
      */
-    public void removeStock(int productID, int stockRemove){
-        
+    public boolean removeStock(int productID, int stockRemove){
+        boolean isInStock = false;
         int i = 0;
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
+        }
+        // will return true if the product being removed is in stock
+        if(products.get(i).getId() == productID){
+            isInStock = true;
         }
         int tempStock = quantity.get(i);
         tempStock -= stockRemove;
@@ -99,6 +103,7 @@ public class Inventory {
             tempStock = 0;
         }
         quantity.set(i, tempStock);
+        return isInStock;
     }
 
     /**
