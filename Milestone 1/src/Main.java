@@ -42,7 +42,20 @@ public class Main {
         System.out.println("Your total comes to: " + testStore.orderTransaction(order2));
 
         System.out.println(testStore.checkInventoryStock(p1));
-        
+
+        managerInventory.addStock(p1, 4);
+        System.out.println(testStore.checkInventoryStock(p1));
+        // Create an order to test the out of stock case
+        int[][] order3 = {{p1.getId(), 1}, {p2.getId(), 1}, {p3.getId(), 2}};
+
+        System.out.println("Order: " + Arrays.deepToString(order3));
+
+        System.out.println("Your total comes to: " + testStore.orderTransaction(order3));
+
+        System.out.println(testStore.checkInventoryStock(p1));
+        System.out.println(testStore.checkInventoryStock(p2));
+        System.out.println(testStore.checkInventoryStock(p3));
+
         System.out.println("Testing add stock method to see if it will add new product");
         Product p4 = new Product("ball", 105, 3.40);
         managerInventory.addStock(p4,3);
