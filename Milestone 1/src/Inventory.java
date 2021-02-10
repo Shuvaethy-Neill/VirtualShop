@@ -14,26 +14,26 @@
 
 import java.util.ArrayList;
 public class Inventory {
-    private ArrayList<Integer> quantity;
-    private ArrayList<Product> products;
+    private ArrayList<Integer> quantity; // The quantity of stock available for the products in store
+    private ArrayList<Product> products; // The products the store sells
 
     /**
      * Constructor for Inventory Class
-     * initialize both arraylists for quantities and products and the products we will be selling
+     * Initialize both arraylists for quantities and products
+     * Creates default products
      */
     public Inventory(){
+
         Product motherBoard = new Product("Motherboard", 1, 100.0);
         Product CPU = new Product("CPU", 2, 150.99);
         Product RAM = new Product("RAM", 3, 89.99);
-        Product hardDrive = new Product("hardDrive", 4, 67.99);
-        Product powerSupply = new Product("powerSupply", 5, 129.99);
+
         quantity = new ArrayList<Integer>();
         products = new ArrayList<Product>();
-        addStock(motherBoard, 50);
-        addStock(CPU,50);
-        addStock(RAM, 50);
-        addStock(hardDrive, 50);
-        addStock(powerSupply, 50);
+
+        addStock(motherBoard, 30);
+        addStock(CPU,20);
+        addStock(RAM, 5);
     }
 
     /**
@@ -41,6 +41,7 @@ public class Inventory {
      * @param productId
      * @return the stock available for a product
      */
+
     public int getStock(int productId) {
         int stock = 0;
         if (products.isEmpty() == false) {
@@ -65,7 +66,7 @@ public class Inventory {
      */
     public void addStock(Product product, int stock){
 
-        //If the arraylist is empty add the product as a new product
+        //If the arraylist is empty add the product as a new product and add stock
         if(products.isEmpty()){
 
             products.add(product);
@@ -102,7 +103,7 @@ public class Inventory {
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
-        // Will return true if the product being removed is in stock
+        // Will return true if the product exists and its stock can be successfully removed
         if(products.get(i).getId() == productID){
             isInStock = true;
         }
