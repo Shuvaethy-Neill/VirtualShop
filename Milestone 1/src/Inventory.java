@@ -19,11 +19,21 @@ public class Inventory {
 
     /**
      * Constructor for Inventory Class
-     * initialize both arraylists for quantities and products
+     * initialize both arraylists for quantities and products and the products we will be selling
      */
     public Inventory(){
+        Product motherBoard = new Product("Motherboard", 1, 100.0);
+        Product CPU = new Product("CPU", 2, 150.99);
+        Product RAM = new Product("RAM", 3, 89.99);
+        Product hardDrive = new Product("hardDrive", 4, 67.99);
+        Product powerSupply = new Product("powerSupply", 5, 129.99);
         quantity = new ArrayList<Integer>();
         products = new ArrayList<Product>();
+        addStock(motherBoard, 50);
+        addStock(CPU,50);
+        addStock(RAM, 50);
+        addStock(hardDrive, 50);
+        addStock(powerSupply, 50);
     }
 
     /**
