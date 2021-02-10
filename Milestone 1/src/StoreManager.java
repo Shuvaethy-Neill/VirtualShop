@@ -53,7 +53,7 @@ public class StoreManager {
             int quantity = order[i][1];
 
             // Insufficient stock for quantity being purchased (transaction fails)
-            if (quantity > managerInventory.getStock(productID)) {
+            if (quantity > checkInventoryStock(managerInventory.getProduct(productID))) {
                 System.out.println("Sorry there is not enough stock for a product you were looking to purchase!");
                 return -1;
             }
@@ -67,6 +67,6 @@ public class StoreManager {
             managerInventory.removeStock(productID, quantity);
 
         }
-        return Math.round(total);
+        return total;
     }
 }
