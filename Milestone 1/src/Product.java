@@ -12,9 +12,9 @@
  */
 
 public class Product {
-    private String name;    // The name of the product
-    private int id;         // The id of the product
-    private double price;   // The price of the product
+    private final String name;    // The name of the product
+    private final int id;         // The id of the product
+    private final double price;   // The price of the product
 
     public Product() {
         this("", 0, 0.0);
