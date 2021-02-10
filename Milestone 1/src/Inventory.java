@@ -55,6 +55,7 @@ public class Inventory {
      */
     public void addStock(Product product, int stock){
 
+        //If the arraylist is empty add the product as a new product
         if(products.isEmpty()){
 
             products.add(product);
@@ -62,14 +63,8 @@ public class Inventory {
         }
         else{
             int i = 0;
-
-            if(i>=products.size()) {
-
-            }
-            else{
-                while (products.get(i).getId() != product.getId() && i<products.size()-1) {
-                    i++;
-                }
+            while (products.get(i).getId() != product.getId() && i<products.size()-1) {
+                i++;
             }
 
             if(products.get(i).getId() == product.getId()){
@@ -121,7 +116,7 @@ public class Inventory {
             i++;
         }
         String productName = products.get(i).getName();
-        
+
         // If the product does not exist return null
         if(products.get(i).getId() != productID){
             productName = null;
@@ -160,7 +155,7 @@ public class Inventory {
             i++;
         }
         Product product = products.get(i);
-        
+
         // If the product does not exist return null
         if(products.get(i).getId() != productID){
             product = null;
