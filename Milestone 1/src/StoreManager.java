@@ -33,7 +33,10 @@ public class StoreManager {
      * @return value of stock available for that specific product
      */
     public int checkInventoryStock(Product product){
-        return managerInventory.getStock(product.getId());
+        if (product != null){
+            return managerInventory.getStock(product.getId());
+        }
+        return -1;
     }
 
     /**
