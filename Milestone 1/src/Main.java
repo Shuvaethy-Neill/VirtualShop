@@ -6,7 +6,7 @@ public class Main {
         Inventory managerInventory = new Inventory();
         StoreManager testStore = new StoreManager(managerInventory);
         Product p1 = new Product("ball", 101, 3.40);
-        Product p2 = new Product("triangle", 73, 3.70);
+        Product p2 = new Product("triangle", 73, 3.73);
         Product p3 = new Product("Computer", 32, 100);
 
         managerInventory.addStock(p1, 3);
@@ -27,20 +27,12 @@ public class Main {
 
         System.out.println(testStore.checkInventoryStock(p1));
 
-        managerInventory.getStock(101);
-        managerInventory.getStock(73);
-        managerInventory.getStock(32);
-
         // Create an order as a 2D array
         int[][] order1 = {{p1.getId(), 3}, {p2.getId(), 1}, {p3.getId(), 2}};
 
         System.out.println("Order: " + Arrays.deepToString(order1));
 
         System.out.println("Your total comes to: " + testStore.orderTransaction(order1));
-
-        managerInventory.getPrice(101);
-        managerInventory.getPrice(73);
-        managerInventory.getPrice(32);
 
         // Create an order to test the out of stock case
         int[][] order2 = {{p1.getId(), 1}, {p2.getId(), 1}, {p3.getId(), 2}};
@@ -50,7 +42,7 @@ public class Main {
         System.out.println("Your total comes to: " + testStore.orderTransaction(order2));
 
         System.out.println(testStore.checkInventoryStock(p1));
-
+        
         System.out.println("Testing add stock method to see if it will add new product");
         Product p4 = new Product("ball", 105, 3.40);
         managerInventory.addStock(p4,3);
