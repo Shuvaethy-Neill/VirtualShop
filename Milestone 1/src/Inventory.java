@@ -103,16 +103,18 @@ public class Inventory {
         while(products.get(i).getId() != productID && i<products.size()-1){
             i++;
         }
-        // Will return true if the product exists and its stock can be successfully removed
         if(products.get(i).getId() == productID){
-            isInStock = true;
+            // Will return true if the product exists and its stock can be successfully removed
+            if (products.get(i).getId() == productID) {
+                isInStock = true;
+            }
+            int tempStock = quantity.get(i);
+            tempStock -= stockRemove;
+            if (tempStock < 0) {
+                tempStock = 0;
+            }
+            quantity.set(i, tempStock);
         }
-        int tempStock = quantity.get(i);
-        tempStock -= stockRemove;
-        if(tempStock< 0){
-            tempStock = 0;
-        }
-        quantity.set(i, tempStock);
         return isInStock;
     }
 
