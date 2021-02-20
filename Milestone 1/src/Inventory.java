@@ -27,13 +27,15 @@ public class Inventory {
         Product motherBoard = new Product("Motherboard", 1, 100.0);
         Product CPU = new Product("CPU", 2, 150.99);
         Product RAM = new Product("RAM", 3, 89.99);
-
+        Product hardDrive = new Product("hardDrive", 4, 67.99);
+        Product powerSupply = new Product("powerSupply", 5, 129.99);
         quantity = new ArrayList<Integer>();
         products = new ArrayList<Product>();
-
-        addStock(motherBoard, 30);
-        addStock(CPU,20);
-        addStock(RAM, 5);
+        addStock(motherBoard, 50);
+        addStock(CPU,50);
+        addStock(RAM, 50);
+        addStock(hardDrive, 50);
+        addStock(powerSupply, 50);
     }
 
     /**
