@@ -7,6 +7,8 @@ public class ShoppingCartClient {
         c1.addToCart(1, 4);
 
         System.out.println(i1.getStock(1));
+        System.out.println(c1.getProductName(1));
+        System.out.println(c1.getStock(1));
 
         c1.removeFromCart(1,4);
         System.out.println(i1.getStock(1));

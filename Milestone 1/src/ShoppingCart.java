@@ -38,4 +38,40 @@ public class ShoppingCart extends Inventory{
         }
         inventory.addStock(getProduct(productID) ,amountOfProduct);
     }
+    public void setCartID(int CartID){
+        this.cartID = cartID;
+    }
+    public int getCartID(){
+        return this.cartID;
+    }
+    public String getProductName(int productID){
+        int i = 0;
+        while(cart.get(i).getId() != productID && i<cart.size()-1){
+            i++;
+        }
+        String productName = cart.get(i).getName();
+
+        // If the product does not exist return null
+        if(cart.get(i).getId() != productID){
+            productName = null;
+        }
+
+        return productName;
+    }
+    public int getStock(int productId) {
+        int stock = 0;
+        if (cart.isEmpty() == false) {
+            int i = 0;
+            while (cart.get(i).getId() != productId && i < cart.size()-1) {
+                i++;
+            }
+            stock = itemsInCart.get(i);
+
+            // If product does not exist return -1
+            if (cart.get(i).getId() != productId) {
+                stock = -1;
+            }
+        }
+        return stock;
+    }
 }
