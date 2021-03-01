@@ -1,68 +1,41 @@
 import java.util.ArrayList;
 
-public class ShoppingCart {
+public class ShoppingCart extends Inventory{
+    private ArrayList<Product>cart;
+    private ArrayList<Integer>itemsInCart;
+    private int cartID;
     private Inventory inventory;
-    public ArrayList<Integer> quantity; // The quantity of stock in the cart
-    public ArrayList<Product> products; // The products in the cart
 
-    public ShoppingCart(Inventory inventory){
+    public ShoppingCart(){
+        this(0,null);
+    }
+    public ShoppingCart(int cartID, Inventory inventory){
+        this.cart = new ArrayList<Product>();
+        this.itemsInCart = new ArrayList<Integer>();
+        this.cartID =cartID;
         this.inventory = inventory;
-        quantity = new ArrayList<Integer>();
-        products = new ArrayList<Product>();
-    }
-    public boolean addProducts(int id, int stock){
-        boolean isAdded = false;
-        Product product = inventory.getProduct(id);
-        if(inventory.getStock(id) != 0){
-            isAdded = true;
-            if(products.isEmpty()){
-
-                products.add(product);
-                quantity.add(stock);
-            }
-            else{
-                int i = 0;
-                while (products.get(i).getId() != product.getId() && i<products.size()-1) {
-                    i++;
-                }
-
-                if(products.get(i).getId() == product.getId()){
-                    int tempStock = quantity.get(i);
-                    tempStock += stock;
-                    quantity.set(i, tempStock);
-                }
-                else{
-                    // If product does not exist then add it
-                    products.add(product);
-                    quantity.add(stock);
-                }
-            }
-            inventory.removeStock(id,stock);
-        }
-
-        return isAdded;
     }
 
-    public boolean removeProducts(int id, int stock){
-        boolean isInStock = false;
+
+    public void addToCart(int productID, int amountOfProduct){
+        this.cart.add(super.getProduct(productID));
+        this.itemsInCart.add(amountOfProduct);
+        inventory.removeStock(productID, amountOfProduct);
+    }
+    public void removeFromCart(int productID, int amountOfProduct){
         int i = 0;
-        while(products.get(i).getId() != id && i<products.size()-1){
+        while(cart.get(i).getId() != productID && i<cart.size()-1){
             i++;
         }
-        if(products.get(i).getId() == id){
-            // Will return true if the product exists and its stock can be successfully removed
-            if (products.get(i).getId() == id) {
-                isInStock = true;
-            }
-            int tempStock = quantity.get(i);
-            tempStock -= stock;
-            if (tempStock < 0) {
-                tempStock = 0;
-            }
-            quantity.set(i, tempStock);
-            inventory.addStock(inventory.getProduct(id),stock);
+        if(itemsInCart.get(i)-amountOfProduct <= 0){
+            cart.remove(i);
+            itemsInCart.remove(i);
         }
-
-        return isInStock;
+        else{
+            int tempStock = itemsInCart.get(i);
+            tempStock -= amountOfProduct;
+            itemsInCart.set(i, tempStock);
+        }
+        inventory.addStock(getProduct(productID) ,amountOfProduct);
     }
 }
