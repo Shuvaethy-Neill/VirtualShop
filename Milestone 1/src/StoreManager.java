@@ -1,6 +1,8 @@
 // Written by: Shuvaethy Neill 101143478
 // Partner: Andre Hazim 101141843
 
+import java.util.ArrayList;
+
 /**
  * This StoreManager class is the "brain" of the system and for this
  * milestone it manages a single Inventory.
@@ -14,12 +16,13 @@
 
 public class StoreManager {
     private Inventory managerInventory;
+    private ShoppingCart shoppingCart;
     private int numCarts = 0;
 
     public StoreManager(){
         managerInventory = new Inventory();
+        shoppingCart = new ShoppingCart();
     }
-
 
     /**
      * If an inventory already exists
@@ -36,6 +39,11 @@ public class StoreManager {
         return numCarts;
     }
 
+    //should this check if it has already been assigned an id?
+    public void assignID(){
+        shoppingCart.setCartID(generateCartID());
+    }
+
 
     /**
      * Check available stock of a product given its object
@@ -49,37 +57,30 @@ public class StoreManager {
         return -1;
     }
 
-    /**
-     * Takes an order in the form of a 2D array ([ProductID1, quantity], [..,..]...) and completes the transaction
-     * @param order
-     * @return total price for order purchase
-     */
-    public double orderTransaction(int [][] order){
+    public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
 
-        // Rows represents each product and quantity [ProductID1, quantity]
-        int rows = order.length;
-
         // Check to see if there is enough stock for each product being purchased
-        for(int i = 0; i < rows; i++ ) {
-            int productID = order[i][0];
-            int quantity = order[i][1];
-
-            // Insufficient stock for quantity being purchased (transaction fails)
-            if (quantity > managerInventory.getStock(productID)) {
-                System.out.println("Sorry there is not enough stock for a product you were looking to purchase!");
-                return -1;
+        for(Product item: items) {
+            for (Integer quantity : quantities) {
+                if (quantity > managerInventory.getStock(item.getId())) {
+                    System.out.println("Sorry there is not enough stock for a product you were looking to purchase!");
+                    return -1;
+                }
             }
         }
 
-        // Totals the transaction cost and removes the corresponding quantity from each product's stock
-        for(int i = 0; i < rows; i++ ){
-            int productID = order[i][0];
-            int quantity = order[i][1];
-            total += (quantity * managerInventory.getPrice(productID));
-            managerInventory.removeStock(productID, quantity);
-
+        System.out.print("You have the following in your cart: " + items.toString());
+        for(Product item: items) {
+            System.out.println(item + (" ("));
+            for (Integer quantity : quantities) {
+                System.out.println("quantity: " + quantity + ") ");
+                total += (quantity * managerInventory.getPrice(item.getId()));
+                managerInventory.removeStock(item.getId(), quantity);
+            }
         }
+        System.out.print("Your total is: ");
         return total;
     }
+
 }
