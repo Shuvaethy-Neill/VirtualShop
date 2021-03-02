@@ -60,16 +60,6 @@ public class StoreManager {
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
 
-        // Check to see if there is enough stock for each product being purchased
-        for(Product item: items) {
-            for (Integer quantity : quantities) {
-                if (quantity > managerInventory.getStock(item.getId())) {
-                    System.out.println("Sorry there is not enough stock for a product you were looking to purchase!");
-                    return -1;
-                }
-            }
-        }
-
         System.out.print("You have the following in your cart: " + items.toString());
         for(Product item: items) {
             System.out.println(item + (" ("));
