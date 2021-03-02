@@ -14,10 +14,12 @@
 
 public class StoreManager {
     private Inventory managerInventory;
+    private int numCarts = 0;
 
     public StoreManager(){
         managerInventory = new Inventory();
     }
+
 
     /**
      * If an inventory already exists
@@ -26,6 +28,14 @@ public class StoreManager {
     public StoreManager(Inventory inv){
         managerInventory = inv;
     }
+
+    public Inventory getStoreInventory(){ return managerInventory;}
+
+    public int generateCartID(){
+        numCarts += 1;
+        return numCarts;
+    }
+
 
     /**
      * Check available stock of a product given its object

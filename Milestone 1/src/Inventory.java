@@ -27,8 +27,8 @@ public class Inventory {
         Product motherBoard = new Product("Motherboard", 1, 100.0);
         Product CPU = new Product("CPU", 2, 150.99);
         Product RAM = new Product("RAM", 3, 89.99);
-        Product hardDrive = new Product("hardDrive", 4, 67.99);
-        Product powerSupply = new Product("powerSupply", 5, 129.99);
+        Product hardDrive = new Product("Hard Drive", 4, 67.99);
+        Product powerSupply = new Product("Power Supply", 5, 129.99);
         quantity = new ArrayList<Integer>();
         products = new ArrayList<Product>();
         addStock(motherBoard, 50);
@@ -176,5 +176,8 @@ public class Inventory {
             product = null;
         }
         return product;
+    }
+    public ArrayList<Product> getProductList(){
+        return this.products;
     }
 }
