@@ -1,5 +1,5 @@
 // Written by: Andre Hazim 101141843
-// Partner: Shuvaethy Neill 101143478
+// Edited by: Shuvaethy Neill 101143478
 
 /**
  * The Product class is a template for products that will be sold in the store
@@ -12,9 +12,9 @@
  */
 
 public class Product {
-    private final String NAME;    // The name of the product
-    private final int ID;         // The id of the product
-    private final double PRICE;   // The price of the product
+    private final String name;    // The name of the product
+    private final int id;         // The id of the product
+    private final double price;   // The price of the product
 
     public Product() {
         this("", 0, 0.0);
@@ -28,9 +28,9 @@ public class Product {
      * @param price
      */
     public Product(String name, int id, double price){
-        this.NAME = name;
-        this.ID = id;
-        this.PRICE = price;
+        this.name = name;
+        this.id = id;
+        this.price = price;
     }
 
     /**
@@ -38,7 +38,7 @@ public class Product {
      * @return name of the product
      */
     public String getName() {
-        return NAME;
+        return name;
     }
 
     /**
@@ -46,13 +46,13 @@ public class Product {
      * @return product id
      */
     public int getId() {
-        return ID;
+        return id;
     }
     /**
      * Get the price of the product
      * @return price of product
      */
     public double getPrice() {
-        return PRICE;
+        return price;
     }
 }
