@@ -33,16 +33,17 @@ public class StoreManager {
     }
 
     public Inventory getStoreInventory(){ return managerInventory;}
+    public void setShoppingCart(ShoppingCart shoppingCart){
+        this.shoppingCart = shoppingCart;
+    }
+    public ShoppingCart getShoppingCart(){return shoppingCart;}
 
     public int generateCartID(){
         numCarts += 1;
         return numCarts;
     }
 
-    //should this check if it has already been assigned an id?
-    public void assignID(){
-        shoppingCart.setCartID(generateCartID());
-    }
+
 
 
     /**
@@ -60,16 +61,16 @@ public class StoreManager {
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
 
-        System.out.print("You have the following in your cart: " + items.toString());
+        System.out.print("You have the following in your cart: ");
         for(Product item: items) {
-            System.out.println(item + (" ("));
+            System.out.println(item.getName() + (" ("));
             for (Integer quantity : quantities) {
-                System.out.println("quantity: " + quantity + ") ");
+                System.out.print("quantity: " + quantity.toString() + ") ");
                 total += (quantity * managerInventory.getPrice(item.getId()));
                 managerInventory.removeStock(item.getId(), quantity);
             }
         }
-        System.out.print("Your total is: ");
+        System.out.println("Your total is: " + total);
         return total;
     }
 
