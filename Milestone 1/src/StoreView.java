@@ -26,6 +26,7 @@ public class StoreView {
         System.out.println("-ADD-");
         System.out.println("Adding "+amountToAdd + " "+ storeManager.getStoreInventory().getProductName(productID)+"(s)");
         shoppingCart.addToCart(productID, amountToAdd);
+        System.out.print("Your Cart : ");
         this.viewCart();
     }
 
@@ -33,10 +34,11 @@ public class StoreView {
         System.out.println("-REMOVE-");
         System.out.println("Removing "+amountToRemove + " "+ storeManager.getStoreInventory().getProductName(productID));
         shoppingCart.removeFromCart(productID, amountToRemove);
+        System.out.print("Your Cart : ");
         this.viewCart();
     }
     private void removeEverythingFromCart(){
-        for (int i = 0; i < shoppingCart.getCart().size(); i++) {
+        for (int i = shoppingCart.getCart().size()-1; i >= 0 ; i--) {
             System.out.println("Removing "+ shoppingCart.getCart().get(i).getName());
             shoppingCart.removeFromCart(shoppingCart.getCart().get(i).getId(),
                     shoppingCart.getItemsInCart().get(i));
@@ -56,17 +58,24 @@ public class StoreView {
         Inventory inv = storeManager.getStoreInventory();
         System.out.println("The Computer Store");
         System.out.println("-BROWSE-");
-        System.out.println("Stock | Product | Price | ID");
+        System.out.println("ID | Product | Price | Stock");
         for (int i = 1; i < inv.getProductList().size() + 1; i++) {
-            System.out.println(inv.getStock(i) + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
-                    i);
+            System.out.println( i + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
+                    inv.getStock(i));
         }
     }
 
     private void viewCart() {
+
         for (int i = 0; i < shoppingCart.getCart().size(); i++) {
-            System.out.println(shoppingCart.getCart().get(i).getName() + ", " + shoppingCart.getItemsInCart().get(i));
+            System.out.print("("+shoppingCart.getCart().get(i).getName() + ", " + shoppingCart.getItemsInCart().get(i)+")");
+            if (i == shoppingCart.getCart().size()-1){
+                System.out.print("");
+            }else {
+                System.out.print(", ");
+            }
         }
+        System.out.println("");
     }
 
     private double getTotal() {
@@ -126,7 +135,7 @@ public class StoreView {
                         System.out.println("Enter the product number");
                         int productNumber = sc.nextInt();
 
-                        while (productNumber > rangeOfProducts){
+                        while (productNumber > rangeOfProducts || productNumber <=0){
                             System.out.println("Please pick a product id in range 1-"+ rangeOfProducts);
                             productNumber = sc.nextInt();
                         }

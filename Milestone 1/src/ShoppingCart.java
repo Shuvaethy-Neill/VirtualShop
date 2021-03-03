@@ -18,9 +18,27 @@ public class ShoppingCart extends Inventory{
 
 
     public void addToCart(int productID, int amountOfProduct){
-        this.cart.add(super.getProduct(productID));
-        this.itemsInCart.add(amountOfProduct);
-        inventory.removeStock(productID, amountOfProduct);
+        if(cart.isEmpty()){
+            this.cart.add(super.getProduct(productID));
+            this.itemsInCart.add(amountOfProduct);
+            inventory.removeStock(productID, amountOfProduct);
+        }
+        else {
+            int i = 0;
+            while (cart.get(i).getId() != productID && i < cart.size() - 1) {
+                i++;
+            }
+            if (cart.get(i).getId() == productID) {
+                int temp = this.itemsInCart.get(i);
+                temp += amountOfProduct;
+                this.itemsInCart.set(i, temp);
+
+            } else {
+                this.cart.add(super.getProduct(productID));
+                this.itemsInCart.add(amountOfProduct);
+            }
+            inventory.removeStock(productID, amountOfProduct);
+        }
     }
     public void removeFromCart(int productID, int amountOfProduct){
         int i = 0;
