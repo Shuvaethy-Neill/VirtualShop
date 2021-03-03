@@ -27,16 +27,19 @@ public class ShoppingCart extends Inventory{
         while(cart.get(i).getId() != productID && i<cart.size()-1){
             i++;
         }
+        int removedProduct = amountOfProduct;
         if(itemsInCart.get(i)-amountOfProduct <= 0){
+            removedProduct = itemsInCart.get(i);
             cart.remove(i);
             itemsInCart.remove(i);
         }
+
         else{
             int tempStock = itemsInCart.get(i);
             tempStock -= amountOfProduct;
             itemsInCart.set(i, tempStock);
         }
-        inventory.addStock(getProduct(productID) ,amountOfProduct);
+        inventory.addStock(getProduct(productID) ,removedProduct);
     }
     public void setCartID(int CartID){
         this.cartID = cartID;
@@ -80,4 +83,5 @@ public class ShoppingCart extends Inventory{
     public ArrayList<Integer> getItemsInCart(){
         return this.itemsInCart;
     }
+
 }

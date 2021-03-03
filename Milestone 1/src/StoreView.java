@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -11,16 +12,39 @@ public class StoreView {
         shoppingCart = storeManager.getShoppingCart();
     }
 
-    public void addToCart(int productID, int amountToAdd) {
+    private boolean checkInCart(int productID){
+        boolean inCart = false;
+        for (int i = 0; i < shoppingCart.getCart().size(); i++) {
+            if (productID== shoppingCart.getCart().get(i).getId()){
+                inCart = true;
+            }
+
+        }
+        return inCart;
+    }
+    private void addToCart(int productID, int amountToAdd) {
         System.out.println("-ADD-");
+        System.out.println("Adding "+amountToAdd + " "+ storeManager.getStoreInventory().getProductName(productID)+"(s)");
         shoppingCart.addToCart(productID, amountToAdd);
+        this.viewCart();
     }
 
-    public void removeFromCart(int productID, int amountToRemove) {
+    private void removeFromCart(int productID, int amountToRemove) {
+        System.out.println("-REMOVE-");
+        System.out.println("Removing "+amountToRemove + " "+ storeManager.getStoreInventory().getProductName(productID));
         shoppingCart.removeFromCart(productID, amountToRemove);
+        this.viewCart();
+    }
+    private void removeEverythingFromCart(){
+        for (int i = 0; i < shoppingCart.getCart().size(); i++) {
+            System.out.println("Removing "+ shoppingCart.getCart().get(i).getName());
+            shoppingCart.removeFromCart(shoppingCart.getCart().get(i).getId(),
+                    shoppingCart.getItemsInCart().get(i));
+
+        }
     }
 
-    public void help() {
+    private void help() {
         System.out.println("browse - shows products in stock");
         System.out.println("addtocart - adds products to cart");
         System.out.println("removefromcart - removes products from cart");
@@ -28,7 +52,7 @@ public class StoreView {
         System.out.println("checkout - to checkout your items");
     }
 
-    public void browse() {
+    private void browse() {
         Inventory inv = storeManager.getStoreInventory();
         System.out.println("The Computer Store");
         System.out.println("-BROWSE-");
@@ -39,17 +63,17 @@ public class StoreView {
         }
     }
 
-    public void viewCart() {
+    private void viewCart() {
         for (int i = 0; i < shoppingCart.getCart().size(); i++) {
             System.out.println(shoppingCart.getCart().get(i).getName() + ", " + shoppingCart.getItemsInCart().get(i));
         }
     }
 
-    public double getTotal() {
+    private double getTotal() {
 
         return storeManager.orderTransaction(shoppingCart.getCart(), shoppingCart.getItemsInCart());
     }
-    public void transaction(double total, double amountToPay){
+    private void transaction(double total, double amountToPay){
         if(amountToPay>=total){
             System.out.println("Thank you for shopping at the computer store");
         }
@@ -62,69 +86,95 @@ public class StoreView {
         StoreView storeView1 = new StoreView(storeManager1, storeManager1.generateCartID());
         StoreView storeView2 = new StoreView(storeManager1, storeManager1.generateCartID());
         StoreView storeView3 = new StoreView(storeManager1, storeManager1.generateCartID());
-        StoreView[] users = {storeView1, storeView2, storeView3};
-        int activeSV = users.length;
-
+        ArrayList<StoreView> users = new ArrayList<StoreView>();
+        users.add(storeView1);
+        users.add(storeView2);
+        users.add(storeView3);
+        int activeSV = users.size();
+        int rangeOfProducts = storeManager1.getStoreInventory().getProductList().size();
+        Inventory inv = storeManager1.getStoreInventory();
 
         Scanner sc = new Scanner(System.in);
         while (activeSV > 0) {
             System.out.print("CHOOSE YOUR STOREVIEW >>> ");
             int choice = sc.nextInt();
-            if (choice < users.length && choice >= 0){
+            if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
                 while (!chooseAnother.equals("y") && !chooseAnother.equals("Y")){
-                    System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to exit");
+                    System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to disconnect "+
+                    "or changeview to change storeview");
                     String command = sc.next();
                     if(command.toLowerCase(Locale.ROOT).equals("browse")){
-                        users[choice].browse();
+                        users.get(choice).browse();
                     }
                     if(command.toLowerCase(Locale.ROOT).equals("removefromcart")) {
                         System.out.println("Enter the product number");
                         int productNumber = sc.nextInt();
+
+                        while (!users.get(choice).checkInCart(productNumber)){
+                            System.out.println("Please pick a product id for a product you have");
+                            productNumber = sc.nextInt();
+                        }
                         System.out.println("Enter the product amount to remove");
                         int amountOfProduct = sc.nextInt();
-                        users[choice].removeFromCart(productNumber,amountOfProduct);
+
+
+                        users.get(choice).removeFromCart(productNumber,amountOfProduct);
                     }
                     if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
 
                         System.out.println("Enter the product number");
                         int productNumber = sc.nextInt();
+
+                        while (productNumber > rangeOfProducts){
+                            System.out.println("Please pick a product id in range 1-"+ rangeOfProducts);
+                            productNumber = sc.nextInt();
+                        }
                         System.out.println("Enter the product amount to add");
                         int amountOfProduct = sc.nextInt();
-                        users[choice].addToCart(productNumber,amountOfProduct);
+                        while (amountOfProduct > inv.getStock(productNumber)){
+                            System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
+                            amountOfProduct = sc.nextInt();
+                        }
+                        users.get(choice).addToCart(productNumber,amountOfProduct);
                     }
                     if(command.toLowerCase(Locale.ROOT).equals("viewcart")){
-                        users[choice].viewCart();
+                        users.get(choice).viewCart();
                     }
                     if(command.toLowerCase(Locale.ROOT).equals("help")){
-                        users[choice].help();
+                        users.get(choice).help();
                     }
                     if(command.toLowerCase(Locale.ROOT).equals("checkout")){
                         System.out.println("Do you want to checkout y/n");
                         String answer = sc.next();
                         if (answer.equals("y")){
-                            double total = users[choice].getTotal();
+                            double total = users.get(choice).getTotal();
                             System.out.println("Please pay now");
                             double payment = sc.nextDouble();
-                            users[choice].transaction(total,payment);
-                            users[choice] = null;
+                            users.get(choice).transaction(total,payment);
+                            users.remove(choice);
                             activeSV--;
                             break;
                         }
                     }
 
                     if(command.toLowerCase(Locale.ROOT).equals("exit")){
-                        users[choice] = null;
+                        users.get(choice).removeEverythingFromCart();
+                        users.remove(choice);
+                        activeSV--;
+
 
                         break;
                     }
-                    System.out.print("GO TO ANOTHER STOREVIEW? (y) >>> ");
-                    chooseAnother = sc.next();
+                    if(command.toLowerCase(Locale.ROOT).equals("changeview")){
+                        chooseAnother = "y";
+                    }
+
                 }
 
             }else{
                 System.out.println(String.format("MAIN > ERROR > BAD CHOICE\nPLEASE CHOOSE IN RANGE [%d, %d]",
-                                0, users.length - 1));
+                                0, users.size() - 1));
 
             }
 
