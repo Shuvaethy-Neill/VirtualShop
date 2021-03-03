@@ -60,28 +60,25 @@ public class StoreManager {
 
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
-        int index = 0;
+        int i = 0;
 
         System.out.print("You have the following in your cart: ");
-        for(index = 0; index < items.size() && index < quantities.size(); index ++) {
-            if(index != items.size() - 1){
-                System.out.print(items.get(index).getName() + " (quantity: " + quantities.get(index) + "), ");
+        for(i = 0; i < items.size() && i < quantities.size(); i ++) {
+            if(i != items.size() - 1){
+                System.out.print(items.get(i).getName() + " (quantity: " + quantities.get(i) + "), ");
             }
 
             else{
-                System.out.println(items.get(index).getName() + " (quantity: " + quantities.get(index) + ") ");
+                System.out.println(items.get(i).getName() + " (quantity: " + quantities.get(i) + ") ");
             }
+        }
+        int j = 0;
+        for(j = 0; j < items.size(); j ++){
+            total += (quantities.get(j) * managerInventory.getPrice(items.get(j).getId()));
         }
 
-        for(Product item: items) {
-            //System.out.println(item.getName() + (" ("));
-            for (Integer quantity : quantities) {
-                //System.out.print("quantity: " + quantity.toString() + ") ");
-                total += (quantity * managerInventory.getPrice(item.getId()));
-                managerInventory.removeStock(item.getId(), quantity);
-            }
-        }
         System.out.println("Your total is: " + total);
+
         return total;
     }
 
