@@ -60,12 +60,23 @@ public class StoreManager {
 
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
+        int index = 0;
 
         System.out.print("You have the following in your cart: ");
+        for(index = 0; index < items.size() && index < quantities.size(); index ++) {
+            if(index != items.size() - 1){
+                System.out.print(items.get(index).getName() + " (quantity: " + quantities.get(index) + "), ");
+            }
+
+            else{
+                System.out.println(items.get(index).getName() + " (quantity: " + quantities.get(index) + ") ");
+            }
+        }
+
         for(Product item: items) {
-            System.out.println(item.getName() + (" ("));
+            //System.out.println(item.getName() + (" ("));
             for (Integer quantity : quantities) {
-                System.out.print("quantity: " + quantity.toString() + ") ");
+                //System.out.print("quantity: " + quantity.toString() + ") ");
                 total += (quantity * managerInventory.getPrice(item.getId()));
                 managerInventory.removeStock(item.getId(), quantity);
             }
