@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ShoppingCart extends Inventory{
     private ArrayList<Product>cart;

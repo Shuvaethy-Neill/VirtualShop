@@ -31,12 +31,17 @@ public class StoreView {
     }
 
     private void removeFromCart(int productID, int amountToRemove) {
+
         System.out.println("-REMOVE-");
         System.out.println("Removing "+amountToRemove + " "+ storeManager.getStoreInventory().getProductName(productID));
         shoppingCart.removeFromCart(productID, amountToRemove);
         System.out.print("Your Cart : ");
         this.viewCart();
+
+
+
     }
+
     private void removeEverythingFromCart(){
         for (int i = shoppingCart.getCart().size()-1; i >= 0 ; i--) {
             System.out.println("Removing "+ shoppingCart.getCart().get(i).getName());
@@ -66,7 +71,7 @@ public class StoreView {
     }
 
     private void viewCart() {
-
+        System.out.print("Your Cart : ");
         for (int i = 0; i < shoppingCart.getCart().size(); i++) {
             System.out.print("("+shoppingCart.getCart().get(i).getName() + ", " + shoppingCart.getItemsInCart().get(i)+")");
             if (i == shoppingCart.getCart().size()-1){
