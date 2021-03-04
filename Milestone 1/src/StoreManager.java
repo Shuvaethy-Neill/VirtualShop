@@ -60,25 +60,22 @@ public class StoreManager {
 
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
-        int i = 0;
 
         System.out.print("You have the following in your cart: ");
-        for(i = 0; i < items.size() && i < quantities.size(); i ++) {
+        for(int i = 0; i < items.size() && i < quantities.size(); i ++) {
             if(i != items.size() - 1){
                 System.out.print(items.get(i).getName() + " (quantity: " + quantities.get(i) + "), ");
             }
-
             else{
                 System.out.println(items.get(i).getName() + " (quantity: " + quantities.get(i) + ") ");
             }
         }
-        int j = 0;
-        for(j = 0; j < items.size(); j ++){
-            total += (quantities.get(j) * managerInventory.getPrice(items.get(j).getId()));
+
+        for(int i = 0; i < items.size(); i ++){
+            total += (quantities.get(i) * managerInventory.getPrice(items.get(i).getId()));
         }
 
         System.out.println("Your total is: " + total);
-
         return total;
     }
 
