@@ -1,5 +1,7 @@
+// Written by: Andre Hazim 101141843
+// Partner: Shuvaethy Neill 101143478
 import java.util.ArrayList;
-import java.util.Locale;
+
 
 public class ShoppingCart extends Inventory{
     private ArrayList<Product>cart;
@@ -7,9 +9,18 @@ public class ShoppingCart extends Inventory{
     private int cartID;
     private Inventory inventory;
 
+    /**
+     * The default constructor
+     */
     public ShoppingCart(){
         this(0,null);
     }
+
+    /**
+     * A constructor for the Shopping cart
+     * @param cartID: int A unique id for each cart
+     * @param inventory: Inventory the inventory of a store
+     */
     public ShoppingCart(int cartID, Inventory inventory){
         this.cart = new ArrayList<Product>();
         this.itemsInCart = new ArrayList<Integer>();
@@ -17,12 +28,15 @@ public class ShoppingCart extends Inventory{
         this.inventory = inventory;
     }
 
-
+    /**
+     * adding items to the shopping cart
+     * @param productID int the id of the product
+     * @param amountOfProduct int the amount of products to add
+     */
     public void addToCart(int productID, int amountOfProduct){
         if(cart.isEmpty()){
             this.cart.add(super.getProduct(productID));
             this.itemsInCart.add(amountOfProduct);
-            inventory.removeStock(productID, amountOfProduct);
         }
         else {
             int i = 0;
@@ -38,9 +52,15 @@ public class ShoppingCart extends Inventory{
                 this.cart.add(super.getProduct(productID));
                 this.itemsInCart.add(amountOfProduct);
             }
-            inventory.removeStock(productID, amountOfProduct);
         }
+        inventory.removeStock(productID, amountOfProduct);
     }
+
+    /**
+     * removes items from carts
+     * @param productID int the id of the product
+     * @param amountOfProduct int amount of product to remove
+     */
     public void removeFromCart(int productID, int amountOfProduct){
         int i = 0;
         while(cart.get(i).getId() != productID && i<cart.size()-1){
@@ -60,12 +80,20 @@ public class ShoppingCart extends Inventory{
         }
         inventory.addStock(getProduct(productID) ,removedProduct);
     }
-    public void setCartID(int CartID){
-        this.cartID = cartID;
-    }
+
+    /**
+     * accessor for cartID
+     * @return int cartID
+     */
     public int getCartID(){
         return this.cartID;
     }
+
+    /**
+     * accessor for product name
+     * @param productID int id for the product
+     * @return String product name
+     */
     public String getProductName(int productID){
         int i = 0;
         while(cart.get(i).getId() != productID && i<cart.size()-1){
@@ -80,6 +108,12 @@ public class ShoppingCart extends Inventory{
 
         return productName;
     }
+
+    /**
+     * gets the stock for a certain product in stock
+     * @param productID
+     * @return
+     */
     public int getStock(int productID) {
         int stock = 0;
         if (cart.isEmpty() == false) {

@@ -1,3 +1,5 @@
+// Written by: Andre Hazim 101141843
+// Partner: Shuvaethy Neill 101143478
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -26,7 +28,7 @@ public class StoreView {
         System.out.println("-ADD-");
         System.out.println("Adding "+amountToAdd + " "+ storeManager.getStoreInventory().getProductName(productID)+"(s)");
         shoppingCart.addToCart(productID, amountToAdd);
-        System.out.print("Your Cart : ");
+
         this.viewCart();
     }
 
@@ -44,7 +46,7 @@ public class StoreView {
 
     private void removeEverythingFromCart(){
         for (int i = shoppingCart.getCart().size()-1; i >= 0 ; i--) {
-            System.out.println("Removing "+ shoppingCart.getCart().get(i).getName());
+
             shoppingCart.removeFromCart(shoppingCart.getCart().get(i).getId(),
                     shoppingCart.getItemsInCart().get(i));
 
@@ -53,7 +55,7 @@ public class StoreView {
 
     private void help() {
         System.out.println("browse - shows products in stock");
-        System.out.println("addtocart - adds products to cart");
+        System.out.println("addtocart - adds products to cart based off of id");
         System.out.println("removefromcart - removes products from cart");
         System.out.println("viewcart - shows products in cart");
         System.out.println("checkout - to checkout your items");
