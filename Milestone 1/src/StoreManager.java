@@ -40,13 +40,11 @@ public class StoreManager {
     }
 
     public Inventory getStoreInventory(){ return managerInventory;}
-    public void setShoppingCart(ShoppingCart shoppingCart){
+    public void addShoppingCart(ShoppingCart shoppingCart){
 
         this.carts.put(numCarts, shoppingCart);
     }
-    public ShoppingCart getShoppingCart(int cartID){
-        return carts.get(cartID);
-    }
+
 
     public int generateCartID(){
         numCarts += 1;
@@ -62,9 +60,6 @@ public class StoreManager {
         ShoppingCart shoppingCart = carts.get(cartId);
         return shoppingCart.getItemsInCart();
     }
-
-
-
 
     public void addToCart(int productID, int amountOfProduct, int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);

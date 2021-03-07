@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class StoreView {
     private StoreManager storeManager;
-    private ShoppingCart shoppingCart;
     private int cartId;
 
     /**
@@ -17,7 +16,7 @@ public class StoreView {
     public StoreView(StoreManager storeManager, int cartID) {
         this.storeManager = storeManager;
         this.cartId = cartID;
-        storeManager.setShoppingCart(new ShoppingCart(cartID));
+        storeManager.addShoppingCart(new ShoppingCart(cartID));
 
     }
 
