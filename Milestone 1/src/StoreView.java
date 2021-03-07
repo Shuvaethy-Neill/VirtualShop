@@ -7,17 +7,19 @@ import java.util.Scanner;
 public class StoreView {
     private StoreManager storeManager;
     private ShoppingCart shoppingCart;
+    private int cartId;
 
     public StoreView(StoreManager storeManager, int cartID) {
         this.storeManager = storeManager;
-        storeManager.setShoppingCart(new ShoppingCart(cartID, storeManager.getStoreInventory()));
-        shoppingCart = storeManager.getShoppingCart();
+        this.cartId = cartID;
+        storeManager.setShoppingCart(new ShoppingCart(cartID));
+
     }
 
     private boolean checkInCart(int productID){
         boolean inCart = false;
-        for (int i = 0; i < shoppingCart.getCart().size(); i++) {
-            if (productID== shoppingCart.getCart().get(i).getId()){
+        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
+            if (productID== storeManager.getSMCart(this.cartId).get(i).getId()){
                 inCart = true;
             }
 
@@ -27,7 +29,7 @@ public class StoreView {
     private void addToCart(int productID, int amountToAdd) {
         System.out.println("-ADD-");
         System.out.println("Adding "+amountToAdd + " "+ storeManager.getStoreInventory().getProductName(productID)+"(s)");
-        shoppingCart.addToCart(productID, amountToAdd);
+        storeManager.addToCart(productID, amountToAdd, this.cartId);
 
         this.viewCart();
     }
@@ -36,8 +38,8 @@ public class StoreView {
 
         System.out.println("-REMOVE-");
         System.out.println("Removing "+amountToRemove + " "+ storeManager.getStoreInventory().getProductName(productID));
-        shoppingCart.removeFromCart(productID, amountToRemove);
-        System.out.print("Your Cart : ");
+        storeManager.removeFromCart(productID, amountToRemove,this.cartId);
+
         this.viewCart();
 
 
@@ -45,10 +47,10 @@ public class StoreView {
     }
 
     private void removeEverythingFromCart(){
-        for (int i = shoppingCart.getCart().size()-1; i >= 0 ; i--) {
+        for (int i =  storeManager.getSMCart(this.cartId).size()-1; i >= 0 ; i--) {
 
-            shoppingCart.removeFromCart(shoppingCart.getCart().get(i).getId(),
-                    shoppingCart.getItemsInCart().get(i));
+            storeManager.removeFromCart( storeManager.getSMCart(this.cartId).get(i).getId(),
+                    storeManager.getSMItemsInCart(this.cartId).get(i),this.cartId);
 
         }
     }
@@ -74,9 +76,9 @@ public class StoreView {
 
     private void viewCart() {
         System.out.print("Your Cart : ");
-        for (int i = 0; i < shoppingCart.getCart().size(); i++) {
-            System.out.print("("+shoppingCart.getCart().get(i).getName() + ", " + shoppingCart.getItemsInCart().get(i)+")");
-            if (i == shoppingCart.getCart().size()-1){
+        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
+            System.out.print("("+storeManager.getSMCart(this.cartId).get(i).getName() + ", " + storeManager.getSMItemsInCart(this.cartId).get(i)+")"); //
+            if (i == storeManager.getSMCart(this.cartId).size()-1){
                 System.out.print("");
             }else {
                 System.out.print(", ");
@@ -87,7 +89,7 @@ public class StoreView {
 
     private double getTotal() {
 
-        return storeManager.orderTransaction(shoppingCart.getCart(), shoppingCart.getItemsInCart());
+        return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
     }
     private void transaction(double total, double amountToPay){
         if(amountToPay>=total){
@@ -118,7 +120,7 @@ public class StoreView {
                 String chooseAnother = "";
                 while (!chooseAnother.equals("y") && !chooseAnother.equals("Y")){
                     System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to disconnect "+
-                    "or changeview to change storeview");
+                            "or changeview to change storeview");
                     String command = sc.next();
                     if(command.toLowerCase(Locale.ROOT).equals("browse")){
                         users.get(choice).browse();
@@ -190,7 +192,7 @@ public class StoreView {
 
             }else{
                 System.out.println(String.format("MAIN > ERROR > BAD CHOICE\nPLEASE CHOOSE IN RANGE [%d, %d]",
-                                0, users.size() - 1));
+                        0, users.size() - 1));
 
             }
 
