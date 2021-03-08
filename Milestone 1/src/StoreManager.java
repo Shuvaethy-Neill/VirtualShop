@@ -88,7 +88,7 @@ public class StoreManager {
      * This method gets the cart of the shopping cart given its cartID
      *
      * @param cartId int, the cartID associated with the specific shopping cart
-     * @return ArrayList<Product>, the arraylist containing the cart of the shopping cart
+     * @return ArrayList<Product>, the arraylist of the cart of the shopping cart
      */
     public ArrayList<Product> getSMCart(int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
@@ -99,7 +99,7 @@ public class StoreManager {
      * This method gets the number of items in the shopping cart given its cartID
      *
      * @param cartId int, the cartID associated with the specific shopping cart
-     * @return ArrayList<Integer>, the arraylist containing the of number of items in the cart
+     * @return ArrayList<Integer>, the arraylist of the number of items in the cart
      */
     public ArrayList<Integer> getSMItemsInCart(int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
