@@ -1,9 +1,9 @@
-// Written by: Shuvaethy Neill 101143478
-// Partner: Andre Hazim 101141843
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+// Written by: Shuvaethy Neill 101143478
+// Partner: Andre Hazim 101141843
 
 /**
  * This StoreManager class is the "brain" of the system and for this
@@ -186,7 +186,7 @@ public class StoreManager {
      *
      * @param items ArrayList<Product>, the products being purchased
      * @param quantities ArrayList<Integer>, the quantities of each product being purchased
-     * @return total double, the total price for order purchase
+     * @return double, the total price for order purchase
      */
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
