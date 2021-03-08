@@ -40,8 +40,8 @@ public class Inventory {
 
     /**
      * Gets stock on product given product id
-     * @param productId
-     * @return the stock available for a product
+     * @param productId int, the specific product id
+     * @return int, the stock available for the product
      */
 
     public int getStock(int productId) {
@@ -63,8 +63,8 @@ public class Inventory {
 
     /**
      * Adds a stock to a product given a name and a stock amount
-     * @param product
-     * @param stock
+     * @param product Product, the specific product
+     * @param stock int, the specific amount of stock being added
      */
     public void addStock(Product product, int stock){
 
@@ -95,8 +95,8 @@ public class Inventory {
 
     /**
      *  Removes specific amount of a product's stock based on product ID
-     * @param productID
-     * @param stockRemove
+     * @param productID int, the specific product id
+     * @param stockRemove int, the amount of stock being removed
      * @return boolean value true for successful remove or false if product does not exist
      */
     public boolean removeStock(int productID, int stockRemove){
@@ -121,9 +121,9 @@ public class Inventory {
     }
 
     /**
-     *
-     * @param productID
-     * @return name of a product given a product id
+     * This method gives access to the name of a product
+     * @param productID int, the product identifier id
+     * @return String, name of a product given a product id
      */
     public String getProductName(int productID){
         int i = 0;
@@ -141,9 +141,9 @@ public class Inventory {
     }
 
     /**
-     *
-     * @param productID
-     * @return price of a product given a product id
+     * This method gives access to the price of a specific product
+     * @param productID int, the product's id
+     * @return double, price of a product given a product id
      */
     public double getPrice(int productID){
         int i = 0;
@@ -160,9 +160,9 @@ public class Inventory {
     }
 
     /**
-     *
-     * @param productID
-     * @return product given ID
+     * This method gives access to a product
+     * @param productID int, the product's id
+     * @return Product, product given it's id
      */
     public Product getProduct(int productID){
         int i = 0;
