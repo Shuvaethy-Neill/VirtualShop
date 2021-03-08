@@ -200,15 +200,16 @@ public class StoreView {
                         int productNumber = sc.nextInt();
 
                         // Checks to see if the user has picked the correct product id
-                        while (productNumber > rangeOfProducts || productNumber <=0){
-                            System.out.println("Please pick a product id in range 1-"+ rangeOfProducts);
+                        while (productNumber > rangeOfProducts || productNumber <=0 || inv.getStock(productNumber) == 0){
+                            System.out.println("Please pick a product id in the range 1-"+ rangeOfProducts + " and that has available stock");
                             productNumber = sc.nextInt();
                         }
+
                         System.out.println("Enter the product amount to add");
                         int amountOfProduct = sc.nextInt();
 
                         //Checks if the user has picked from the range of products the store has
-                        while (amountOfProduct > inv.getStock(productNumber)){
+                        while (amountOfProduct > inv.getStock(productNumber) || amountOfProduct <= 0){
                             System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
                             amountOfProduct = sc.nextInt();
                         }
