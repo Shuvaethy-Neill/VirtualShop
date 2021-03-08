@@ -1,29 +1,44 @@
-// Written by: Andre Hazim 101141843
-// Partner: Shuvaethy Neill 101143478
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+
+// Written by: Andre Hazim 101141843
+// Partner: Shuvaethy Neill 101143478
+
+/**
+ * This StoreView class is the entry point of the store system
+ * For this milestone, the user interface is textually displayed in the console
+ *
+ * @author Andre Hazim
+ *
+ * @version 1.0
+ *
+ * @since 2021-03-07
+ *
+ */
 
 public class StoreView {
     private StoreManager storeManager;
     private int cartId;
 
     /**
-     * A constructor of storeView
+     * The constructor for StoreView
+     *
      * @param storeManager StoreManager
-     * @param cartID int the id of the cart for a specific storeview
+     * @param cartID int, the id of the cart for a specific storeview
      */
     public StoreView(StoreManager storeManager, int cartID) {
         this.storeManager = storeManager;
         this.cartId = cartID;
+        // Adds ShoppingCart to hashmap in StoreManager to keep track
         storeManager.addShoppingCart(new ShoppingCart(cartID));
-
     }
 
     /**
-     * this checks if the product is in the cart
-     * @param productID int the id of the product
-     * @return a boolean if the item is in the cart
+     * This method checks if the product is in the shopping cart
+     *
+     * @param productID int, the id of the product
+     * @return a boolean, true if the item is in the cart or false otherwise
      */
     private boolean checkInCart(int productID){
         boolean inCart = false;
@@ -37,9 +52,10 @@ public class StoreView {
     }
 
     /**
-     * adds a product to cart by storemanager
-     * @param productID int the id of the product to be added
-     * @param amountToAdd int the amount of the product to add
+     * This method adds a product to cart by StoreManager
+     *
+     * @param productID int, the id of the product to be added
+     * @param amountToAdd int, the amount of the product to add
      */
     private void addToCart(int productID, int amountToAdd) {
         System.out.println("-ADD-");
@@ -50,9 +66,10 @@ public class StoreView {
     }
 
     /**
-     * removes product from store manager
-     * @param productID  int the id of the product to be added
-     * @param amountToRemove int the amount of the product to remove
+     * This method removes product from the cart by StoreManager
+     *
+     * @param productID  int, the id of the product to be removed
+     * @param amountToRemove int, the amount of the product to remove
      */
     private void removeFromCart(int productID, int amountToRemove) {
 
@@ -61,25 +78,21 @@ public class StoreView {
         storeManager.removeFromCart(productID, amountToRemove,this.cartId);
 
         this.viewCart();
-
-
-
     }
 
     /**
-     * this method removes everything from the cart when a user exits
+     * This method removes everything from the cart when a user exits
      */
     private void removeEverythingFromCart(){
         for (int i =  storeManager.getSMCart(this.cartId).size()-1; i >= 0 ; i--) {
 
             storeManager.removeFromCart( storeManager.getSMCart(this.cartId).get(i).getId(),
                     storeManager.getSMItemsInCart(this.cartId).get(i),this.cartId);
-
         }
     }
 
     /**
-     * this displays all the commands the user can enter
+     * This method displays all the commands the user can enter
      */
     private void help() {
         System.out.println("browse - shows products in stock");
@@ -90,7 +103,7 @@ public class StoreView {
     }
 
     /**
-     * this displays the stores current inventory
+     * This method displays the stores current inventory
      */
     private void browse() {
         Inventory inv = storeManager.getStoreInventory();
@@ -104,7 +117,7 @@ public class StoreView {
     }
 
     /**
-     * this shows the user's current cart
+     * This method shows the user's current cart
      */
     private void viewCart() {
         System.out.print("Your Cart : ");
@@ -120,11 +133,10 @@ public class StoreView {
     }
 
     /**
-     * this gets the total for the transactions
-     * @return returns the total as a double
+     * This method gets the total for the transaction
+     * @return double, the total price
      */
     private double getTotal() {
-
         return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
     }
 
@@ -137,8 +149,6 @@ public class StoreView {
         if(amountToPay>=total){
             System.out.println("Thank you for shopping at the computer store");
         }
-
-
     }
 
     public static void main(String[] args) {
@@ -160,58 +170,59 @@ public class StoreView {
             int choice = sc.nextInt();
             if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
-                //checks if they want to change the storeview
+
+                // Checks if they want to change the storeview
                 while (!chooseAnother.equals("y") && !chooseAnother.equals("Y")){
                     System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to disconnect "+
                             "or changeview to change storeview");
                     String command = sc.next();
-                    //checks if the user entered the browse command
+                    // Checks if the user entered the browse command
                     if(command.toLowerCase(Locale.ROOT).equals("browse")){
                         users.get(choice).browse();
                     }
-                    //checks if the user entered the removefromcart command
+                    // Checks if the user entered the removefromcart command
                     if(command.toLowerCase(Locale.ROOT).equals("removefromcart")) {
                         System.out.println("Enter the product number");
                         int productNumber = sc.nextInt();
-                        //checks if the user has picked from the range of products they has
+
+                        // Checks if the user has picked from the range of products they has
                         while (!users.get(choice).checkInCart(productNumber)){
                             System.out.println("Please pick a product id for a product you have");
                             productNumber = sc.nextInt();
                         }
                         System.out.println("Enter the product amount to remove");
                         int amountOfProduct = sc.nextInt();
-
-
                         users.get(choice).removeFromCart(productNumber,amountOfProduct);
                     }
-                    //checks if the user entered the addtocart command
+                    // Checks if the user entered the addtocart command
                     if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
-
                         System.out.println("Enter the product number");
                         int productNumber = sc.nextInt();
-                        //checks to see if the user has picked the correct product id
+
+                        // Checks to see if the user has picked the correct product id
                         while (productNumber > rangeOfProducts || productNumber <=0){
                             System.out.println("Please pick a product id in range 1-"+ rangeOfProducts);
                             productNumber = sc.nextInt();
                         }
                         System.out.println("Enter the product amount to add");
                         int amountOfProduct = sc.nextInt();
-                        //checks if the user has picked from the range of products the store has
+
+                        //Checks if the user has picked from the range of products the store has
                         while (amountOfProduct > inv.getStock(productNumber)){
                             System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
                             amountOfProduct = sc.nextInt();
                         }
                         users.get(choice).addToCart(productNumber,amountOfProduct);
                     }
-                    //checks if the user entered the viewcart command
+                    // Checks if the user entered the viewcart command
                     if(command.toLowerCase(Locale.ROOT).equals("viewcart")){
                         users.get(choice).viewCart();
                     }
-                    //checks if the user entered the help command
+                    // Checks if the user entered the help command
                     if(command.toLowerCase(Locale.ROOT).equals("help")){
                         users.get(choice).help();
                     }
-                    //checks if the user entered the checkout command
+                    // Checks if the user entered the checkout command
                     if(command.toLowerCase(Locale.ROOT).equals("checkout")){
                         System.out.println("Do you want to checkout y/n");
                         String answer = sc.next();
@@ -225,34 +236,24 @@ public class StoreView {
                             break;
                         }
                     }
-                    //checks if the user entered the exit command
+                    // Checks if the user entered the exit command
                     if(command.toLowerCase(Locale.ROOT).equals("exit")){
                         users.get(choice).removeEverythingFromCart();
                         users.remove(choice);
                         activeSV--;
-
-
                         break;
                     }
-                    //checks if the user entered the changeview command
+                    // Checks if the user entered the changeview command
                     if(command.toLowerCase(Locale.ROOT).equals("changeview")){
                         chooseAnother = "y";
                     }
-
                 }
 
             }else{
                 System.out.println(String.format("MAIN > ERROR > BAD CHOICE\nPLEASE CHOOSE IN RANGE [%d, %d]",
                         0, users.size() - 1));
-
             }
-
         }
         System.out.println("ALL STOREVIEWS DEACTIVATED");
-
     }
-
-
-
-
 }
