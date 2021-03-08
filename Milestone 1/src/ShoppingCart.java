@@ -1,8 +1,19 @@
+import java.util.ArrayList;
+import java.util.Locale;
+
 // Written by: Andre Hazim 101141843
 // Edited by: Shuvaethy Neill 101143478
 
-import java.util.ArrayList;
-import java.util.Locale;
+/**
+ * This ShoppingCart class models a user's shopping cart
+ *
+ * @author Andre Hazim
+ *
+ * @version 1.0
+ *
+ * @since 2021-03-07
+ *
+ */
 
 public class ShoppingCart {
     private ArrayList<Product>cart;
