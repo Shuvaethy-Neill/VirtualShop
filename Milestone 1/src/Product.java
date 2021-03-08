@@ -35,7 +35,7 @@ public class Product {
 
     /**
      * Get the name of the product
-     * @return name of the product
+     * @return String, name of the product
      */
     public String getName() {
         return name;
@@ -43,14 +43,14 @@ public class Product {
 
     /**
      * Get the id of the product
-     * @return product id
+     * @return int, product id
      */
     public int getId() {
         return id;
     }
     /**
      * Get the price of the product
-     * @return price of product
+     * @return double, price of product
      */
     public double getPrice() {
         return price;
