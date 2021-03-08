@@ -166,11 +166,8 @@ public class StoreView {
 
         Scanner sc = new Scanner(System.in);
         while (activeSV > 0) {
-            System.out.print("CHOOSE YOUR STOREVIEW >>> ");
-            int choice= sc.nextInt();
-
-
-
+            System.out.print("CHOOSE YOUR STOREVIEW (integer input) >>> ");
+            int choice = sc.nextInt();
             if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
 
@@ -197,10 +194,10 @@ public class StoreView {
                             System.out.println("Enter the product amount to remove");
                             int amountOfProduct = sc.nextInt();
                             users.get(choice).removeFromCart(productNumber, amountOfProduct);
-                        }else{
-                            System.out.println("Cart is empty nothing to remove");
                         }
-
+                        else{
+                            System.out.println("Your cart is empty! There is nothing to remove");
+                        }
                     }
                     // Checks if the user entered the addtocart command
                     if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
