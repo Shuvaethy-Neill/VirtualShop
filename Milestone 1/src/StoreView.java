@@ -167,7 +167,10 @@ public class StoreView {
         Scanner sc = new Scanner(System.in);
         while (activeSV > 0) {
             System.out.print("CHOOSE YOUR STOREVIEW >>> ");
-            int choice = sc.nextInt();
+            int choice= sc.nextInt();
+
+
+
             if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
 
@@ -182,17 +185,22 @@ public class StoreView {
                     }
                     // Checks if the user entered the removefromcart command
                     if(command.toLowerCase(Locale.ROOT).equals("removefromcart")) {
-                        System.out.println("Enter the product number");
-                        int productNumber = sc.nextInt();
+                        if (!storeManager1.getSMCart(users.get(choice).cartId).isEmpty()) {
+                            System.out.println("Enter the product number");
+                            int productNumber = sc.nextInt();
 
-                        // Checks if the user has picked from the range of products they has
-                        while (!users.get(choice).checkInCart(productNumber)){
-                            System.out.println("Please pick a product id for a product you have");
-                            productNumber = sc.nextInt();
+                            // Checks if the user has picked from the range of products they has
+                            while (!users.get(choice).checkInCart(productNumber)) {
+                                System.out.println("Please pick a product id for a product you have");
+                                productNumber = sc.nextInt();
+                            }
+                            System.out.println("Enter the product amount to remove");
+                            int amountOfProduct = sc.nextInt();
+                            users.get(choice).removeFromCart(productNumber, amountOfProduct);
+                        }else{
+                            System.out.println("Cart is empty nothing to remove");
                         }
-                        System.out.println("Enter the product amount to remove");
-                        int amountOfProduct = sc.nextInt();
-                        users.get(choice).removeFromCart(productNumber,amountOfProduct);
+
                     }
                     // Checks if the user entered the addtocart command
                     if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
