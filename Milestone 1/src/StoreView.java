@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -150,6 +151,9 @@ public class StoreView {
             System.out.println("Thank you for shopping at the computer store");
         }
     }
+    private void displayGUI(){
+
+    }
 
     public static void main(String[] args) {
         StoreManager storeManager1 = new StoreManager();
@@ -167,7 +171,16 @@ public class StoreView {
         Scanner sc = new Scanner(System.in);
         while (activeSV > 0) {
             System.out.print("CHOOSE YOUR STOREVIEW (integer input) >>> ");
-            int choice = sc.nextInt();
+            int choice = -1;
+            while (choice == -1){
+                try {
+                    choice = sc.nextInt();
+                }catch (InputMismatchException ime){
+                    System.out.println("Please input an integer for a store id");
+                    sc.next();
+
+                }
+            }
             if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
 
@@ -184,15 +197,42 @@ public class StoreView {
                     if(command.toLowerCase(Locale.ROOT).equals("removefromcart")) {
                         if (!storeManager1.getSMCart(users.get(choice).cartId).isEmpty()) {
                             System.out.println("Enter the product number");
-                            int productNumber = sc.nextInt();
+                            int productNumber = -1;
+                            while (productNumber == -1){
+                                try {
+                                    productNumber = sc.nextInt();
+                                }catch (InputMismatchException ime){
+                                    System.out.println("Please pick a product id");
+                                    sc.next();
+
+                                }
+                            }
 
                             // Checks if the user has picked from the range of products they has
                             while (!users.get(choice).checkInCart(productNumber)) {
                                 System.out.println("Please pick a product id for a product you have");
-                                productNumber = sc.nextInt();
+                                productNumber = -1;
+                                while (productNumber == -1){
+                                    try {
+                                        productNumber = sc.nextInt();
+                                    }catch (InputMismatchException ime){
+                                        System.out.println("Please pick a product id");
+                                        sc.next();
+
+                                    }
+                                }
                             }
                             System.out.println("Enter the product amount to remove");
-                            int amountOfProduct = sc.nextInt();
+                            int amountOfProduct = -1;
+                            while (amountOfProduct == -1){
+                                try {
+                                    amountOfProduct = sc.nextInt();
+                                }catch (InputMismatchException ime){
+                                    System.out.println("Please enter a number");
+                                    sc.next();
+
+                                }
+                            }
                             users.get(choice).removeFromCart(productNumber, amountOfProduct);
                         }
                         else{
@@ -202,21 +242,57 @@ public class StoreView {
                     // Checks if the user entered the addtocart command
                     if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
                         System.out.println("Enter the product number");
-                        int productNumber = sc.nextInt();
+                        int productNumber = -1;
+                        while (productNumber == -1){
+                            try {
+                                productNumber = sc.nextInt();
+                            }catch (InputMismatchException ime){
+                                System.out.println("Please pick a product id");
+                                sc.next();
+
+                            }
+                        }
 
                         // Checks to see if the user has picked the correct product id
                         while (productNumber > rangeOfProducts || productNumber <=0 || inv.getStock(productNumber) == 0){
                             System.out.println("Please pick a product id in the range 1-"+ rangeOfProducts + " and that has available stock");
-                            productNumber = sc.nextInt();
+                            productNumber = -1;
+                            while (productNumber == -1){
+                                try {
+                                    productNumber = sc.nextInt();
+                                }catch (InputMismatchException ime){
+                                    System.out.println("Please pick a product id");
+                                    sc.next();
+
+                                }
+                            }
                         }
 
                         System.out.println("Enter the product amount to add");
-                        int amountOfProduct = sc.nextInt();
+                        int amountOfProduct = -1;
+                        while (amountOfProduct == -1){
+                            try {
+                                amountOfProduct = sc.nextInt();
+                            }catch (InputMismatchException ime){
+                                System.out.println("Please enter a number");
+                                sc.next();
+
+                            }
+                        }
 
                         //Checks if the user has picked from the range of products the store has
                         while (amountOfProduct > inv.getStock(productNumber) || amountOfProduct <= 0){
                             System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
-                            amountOfProduct = sc.nextInt();
+                            amountOfProduct = -1;
+                            while (amountOfProduct == -1){
+                                try {
+                                    amountOfProduct = sc.nextInt();
+                                }catch (InputMismatchException ime){
+                                    System.out.println("Please enter a number");
+                                    sc.next();
+
+                                }
+                            }
                         }
                         users.get(choice).addToCart(productNumber,amountOfProduct);
                     }
