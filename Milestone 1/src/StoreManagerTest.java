@@ -27,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StoreManagerTest {
     private static StoreManager storeManager;
 
+    /**
+     *
+     */
     @BeforeAll
     public static void init(){
         storeManager = new StoreManager();
@@ -34,6 +37,9 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testGetStoreInventory(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -48,6 +54,9 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testCheckInventoryStock(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -73,6 +82,9 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testGenerateCartID(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -88,16 +100,19 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testAddShoppingCart(){
         /*
         StoreManager storeManager = new StoreManager();
         storeManager.generateCartID();
-        ShoppingCart shoppingCart1 = new ShoppingCart(0);
+        ShoppingCart shoppingCart = new ShoppingCart(0);
         storeManager.addShoppingCart(shoppingCart1);
 
         HashMap testCarts = new HashMap<Integer, ShoppingCart>();
-        testCarts.put(0,shoppingCart1);
+        testCarts.put(0,shoppingCart);
 
         assertEquals(testCarts, );
 
@@ -105,6 +120,9 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testGetSMCart(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -134,6 +152,9 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testGetSMItemsInCart(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -167,16 +188,111 @@ public class StoreManagerTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testAddToCart(){
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
+        System.out.println("Testing the addToCart method in the StoreManager Class");
+        System.out.println();
+
+        StoreManager storeManager = new StoreManager();
+        int cartID = storeManager.generateCartID();
+        ShoppingCart shoppingCart = new ShoppingCart(cartID);
+        storeManager.addShoppingCart(shoppingCart);
+
+        storeManager.addToCart(1,2,cartID);
+
+        ArrayList<Product> tempCart = new ArrayList<Product>();
+        ArrayList<Integer> tempItemsInCart = new ArrayList<Integer>();
+        tempCart.add(storeManager.getStoreInventory().getProduct(1));
+        tempItemsInCart.add(2);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(48, storeManager.getStoreInventory().getStock(1), "There is a bug in the addToCart method in the StoreManager class");
+
+        storeManager.addToCart(4,15,cartID);
+
+        tempCart.add(storeManager.getStoreInventory().getProduct(4));
+        tempItemsInCart.add(15);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(35, storeManager.getStoreInventory().getStock(4), "There is a bug in the addToCart method in the StoreManager class");
+
+        storeManager.addToCart(1,25,cartID);
+
+        tempItemsInCart.set(0,27);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the addToCart method in the StoreManager class");
+        assertEquals(23, storeManager.getStoreInventory().getStock(1), "There is a bug in the addToCart method in the StoreManager class");
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testRemoveFromCart(){
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
+        System.out.println("Testing the removeFromCart method in the StoreManager Class:");
+        System.out.println();
+        
+        StoreManager storeManager = new StoreManager();
+        int cartID = storeManager.generateCartID();
+        ShoppingCart shoppingCart = new ShoppingCart(cartID);
+        storeManager.addShoppingCart(shoppingCart);
+
+        storeManager.addToCart(1,2,cartID);
+        storeManager.addToCart(3,7,cartID);
+        storeManager.addToCart(5,10,cartID);
+
+        ArrayList<Product> tempCart = new ArrayList<Product>();
+        ArrayList<Integer> tempItemsInCart = new ArrayList<Integer>();
+
+        tempCart.add(storeManager.getStoreInventory().getProduct(1));
+        tempCart.add(storeManager.getStoreInventory().getProduct(3));
+        tempCart.add(storeManager.getStoreInventory().getProduct(5));
+
+        tempItemsInCart.add(2);
+        tempItemsInCart.add(7);
+        tempItemsInCart.add(10);
+
+        storeManager.removeFromCart(3,4,cartID);
+
+        tempItemsInCart.set(1,3);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(47, storeManager.getStoreInventory().getStock(3), "There is a bug in the addToCart method in the StoreManager class");
+
+        storeManager.removeFromCart(5,10,cartID);
+
+        tempCart.remove(2);
+        tempItemsInCart.remove(2);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(50, storeManager.getStoreInventory().getStock(5), "There is a bug in the addToCart method in the StoreManager class");
+
+        storeManager.removeFromCart(1,2,cartID);
+
+        tempCart.remove(0);
+        tempItemsInCart.remove(0);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(50, storeManager.getStoreInventory().getStock(1), "There is a bug in the addToCart method in the StoreManager class");
+
+        storeManager.removeFromCart(3,1,cartID);
+
+        tempItemsInCart.set(0,2);
+        assertEquals(tempCart, shoppingCart.getCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(tempItemsInCart, shoppingCart.getItemsInCart(), "There is a bug in the removeFromCart method in the StoreManager class");
+        assertEquals(48, storeManager.getStoreInventory().getStock(3), "There is a bug in the addToCart method in the StoreManager class");
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testOrderTransaction(){
         System.out.println("--------------------------------------------------------------------------------------------------------------");
