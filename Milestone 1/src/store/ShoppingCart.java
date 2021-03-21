@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ShoppingCart extends Inventory{
+public class ShoppingCart  {
     private ArrayList<Product>cart;
     private ArrayList<Integer>itemsInCart;
     private int cartID;
@@ -43,9 +43,9 @@ public class ShoppingCart extends Inventory{
      * @param productID the id of the product
      * @param amountOfProduct the ammount of product to be added
      */
-    public void addToCart(int productID, int amountOfProduct){
+    public void addToCart(int productID, int amountOfProduct, Inventory inventory){
         if (cart.isEmpty()){
-            this.cart.add(super.getProduct(productID));
+            this.cart.add(inventory.getProduct(productID));
             this.itemsInCart.add(amountOfProduct);
         }
         else{
@@ -59,7 +59,7 @@ public class ShoppingCart extends Inventory{
                 itemsInCart.set(i, tempStock);
             }
             else{
-                this.cart.add(super.getProduct(productID));
+                this.cart.add(inventory.getProduct(productID));
                 this.itemsInCart.add(amountOfProduct);
             }
 

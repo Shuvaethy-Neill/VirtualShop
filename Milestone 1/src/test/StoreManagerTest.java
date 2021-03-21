@@ -1,7 +1,7 @@
 // Written by: Shuvaethy Neill 101143478
 // Partner: Andre Hazim 101141843
 
-package test;
+
 
 import org.junit.jupiter.api.*;
 import store.Inventory;
@@ -12,6 +12,7 @@ import store.StoreManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**

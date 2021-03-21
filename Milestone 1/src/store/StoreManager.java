@@ -118,7 +118,7 @@ public class StoreManager {
         ShoppingCart shoppingCart = carts.get(cartId);
 
         // If cart is empty, simply add the item and its quantity
-        shoppingCart.addToCart(productID,amountOfProduct);
+        shoppingCart.addToCart(productID,amountOfProduct,this.getStoreInventory());
         // Update the carts HashMap with the new additions
         carts.put(cartId, shoppingCart);
         // Decrease stock in store store.Inventory when user adds something to cart
