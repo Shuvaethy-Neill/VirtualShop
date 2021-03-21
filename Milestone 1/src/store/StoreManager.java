@@ -118,33 +118,12 @@ public class StoreManager {
         ShoppingCart shoppingCart = carts.get(cartId);
 
         // If cart is empty, simply add the item and its quantity
-        if(shoppingCart.getCart().isEmpty()){
-            shoppingCart.getCart().add(managerInventory.getProduct(productID));
-            shoppingCart.getItemsInCart().add(amountOfProduct);
-            // Decrease stock in store store.Inventory when user adds something to cart
-            managerInventory.removeStock(productID, amountOfProduct);
-        }
-        else {
-            int i = 0;
-            while (shoppingCart.getCart().get(i).getId() != productID && i < shoppingCart.getCart().size() - 1) {
-                i++;
-            }
+        shoppingCart.addToCart(productID,amountOfProduct);
+        // Update the carts HashMap with the new additions
+        carts.put(cartId, shoppingCart);
+        // Decrease stock in store store.Inventory when user adds something to cart
+        managerInventory.removeStock(productID, amountOfProduct);
 
-            // If product is already in cart, add to its quantity
-            if (shoppingCart.getCart().get(i).getId() == productID) {
-                int temp = shoppingCart.getItemsInCart().get(i);
-                temp += amountOfProduct;
-                shoppingCart.getItemsInCart().set(i, temp);
-
-            } else {
-                shoppingCart.getCart().add(managerInventory.getProduct(productID));
-                shoppingCart.getItemsInCart().add(amountOfProduct);
-            }
-            // Update the carts HashMap with the new additions
-            carts.put(cartId, shoppingCart);
-            // Decrease stock in store store.Inventory when user adds something to cart
-            managerInventory.removeStock(productID, amountOfProduct);
-        }
     }
 
     /**
@@ -156,26 +135,8 @@ public class StoreManager {
      */
     public void removeFromCart(int productID, int amountOfProduct,int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
-        int i = 0;
-        while(shoppingCart.getCart().get(i).getId() != productID && i < shoppingCart.getCart().size()-1){
-            i++;
-        }
-        int removedProduct = amountOfProduct;
+        int removedProduct = shoppingCart.removeFromCart(productID, amountOfProduct);
 
-        // If quantity needed to be removed results in a quantity of 0 or less
-        if(shoppingCart.getItemsInCart().get(i)-amountOfProduct <= 0){
-            removedProduct = shoppingCart.getItemsInCart().get(i);
-            // Remove product and its quantity from cart
-            shoppingCart.getCart().remove(i);
-            shoppingCart.getItemsInCart().remove(i);
-        }
-
-        else{
-            // Remove specified quantity regularly and update cart quantity arraylist
-            int tempStock = shoppingCart.getItemsInCart().get(i);
-            tempStock -= amountOfProduct;
-            shoppingCart.getItemsInCart().set(i, tempStock);
-        }
         // Update the carts HashMap after removals
         carts.put(cartId, shoppingCart);
         // Add stock in store store.Inventory when user removes something to cart

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ShoppingCart {
+public class ShoppingCart extends Inventory{
     private ArrayList<Product>cart;
     private ArrayList<Integer>itemsInCart;
     private int cartID;
@@ -36,6 +36,63 @@ public class ShoppingCart {
         this.cart = new ArrayList<Product>();
         this.itemsInCart = new ArrayList<Integer>();
         this.cartID = cartID;
+    }
+
+    /**
+     * adds items to the cart
+     * @param productID the id of the product
+     * @param amountOfProduct the ammount of product to be added
+     */
+    public void addToCart(int productID, int amountOfProduct){
+        if (cart.isEmpty()){
+            this.cart.add(super.getProduct(productID));
+            this.itemsInCart.add(amountOfProduct);
+        }
+        else{
+            int i = 0;
+            while (cart.get(i).getId() != productID && i<cart.size()-1) {
+                i++;
+            }
+            if (cart.get(i).getId() == productID){
+                int tempStock = itemsInCart.get(i);
+                tempStock += amountOfProduct;
+                itemsInCart.set(i, tempStock);
+            }
+            else{
+                this.cart.add(super.getProduct(productID));
+                this.itemsInCart.add(amountOfProduct);
+            }
+
+        }
+    }
+
+    /**
+     * removes items from cart
+     * @param productID the id of the product
+     * @param amountOfProduct the amount of product to be removed
+     * @return returns the amount of removed product
+     */
+    public int removeFromCart(int productID, int amountOfProduct){
+        int i = 0;
+        while(cart.get(i).getId() != productID && i < cart.size()-1){
+            i++;
+        }
+        int removedProduct = amountOfProduct;
+
+        // If quantity needed to be removed results in a quantity of 0 or less
+        if(itemsInCart.get(i)-amountOfProduct <= 0){
+            removedProduct = itemsInCart.get(i);
+            // Remove product and its quantity from cart
+            cart.remove(i);
+            itemsInCart.remove(i);
+        }
+        else{
+            // Remove specified quantity regularly and update cart quantity arraylist
+            int tempStock = itemsInCart.get(i);
+            tempStock -= amountOfProduct;
+            itemsInCart.set(i, tempStock);
+        }
+        return removedProduct;
     }
 
     /**
