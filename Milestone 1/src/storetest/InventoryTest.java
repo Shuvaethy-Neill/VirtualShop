@@ -1,6 +1,6 @@
 // Written by: Shuvaethy Neill 101143478 and Andre Hazim 101141843
 
-package test;
+
 import org.junit.jupiter.api.*;
 import store.Inventory;
 import store.Product;
