@@ -1,4 +1,5 @@
-import java.lang.reflect.Array;
+package store;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -6,8 +7,8 @@ import java.util.HashMap;
 // Partner: Andre Hazim 101141843
 
 /**
- * This StoreManager class is the "brain" of the system and for this
- * milestone it manages the Inventory and ShoppingCarts.
+ * This store.StoreManager class is the "brain" of the system and for this
+ * milestone it manages the store.Inventory and ShoppingCarts.
  * @author Shuvaethy Neill
  *
  * @version 2.0
@@ -17,12 +18,12 @@ import java.util.HashMap;
  */
 
 public class StoreManager {
-    private Inventory managerInventory;                 // Inventory being managed
+    private Inventory managerInventory;                 // store.Inventory being managed
     private int numCarts;                               // Number of ShoppingCarts
     private HashMap <Integer, ShoppingCart> carts;      // The cartIDs and ShoppingCarts created
 
     /**
-     * Default constructor for StoreManager
+     * Default constructor for store.StoreManager
      *
      */
     public StoreManager(){
@@ -32,9 +33,9 @@ public class StoreManager {
     }
 
     /**
-     * Constructor for StoreManager
+     * Constructor for store.StoreManager
      *
-     * @param inv Inventory, existing Inventory
+     * @param inv store.Inventory, existing store.Inventory
      */
     public StoreManager(Inventory inv){
         managerInventory = inv;
@@ -43,9 +44,9 @@ public class StoreManager {
     }
 
     /**
-     * This method provides access to the inventory that the StoreManager is managing
+     * This method provides access to the inventory that the store.StoreManager is managing
      *
-     * @return Inventory, the Inventory being managed
+     * @return store.Inventory, the store.Inventory being managed
      */
     public Inventory getStoreInventory(){
         return managerInventory;
@@ -53,7 +54,7 @@ public class StoreManager {
 
     /**
      * This method checks the available stock of a product given its object
-     * @param product Product, the product to be checked
+     * @param product store.Product, the product to be checked
      * @return int, value of stock available for that specific product
      */
     public int checkInventoryStock(Product product){
@@ -65,7 +66,7 @@ public class StoreManager {
 
     /**
      * This method keeps track of how many cartIDs there are and generates a new cartID
-     * everytime a new ShoppingCart is made
+     * everytime a new store.ShoppingCart is made
      *
      * @return int, new cartID
      */
@@ -75,10 +76,10 @@ public class StoreManager {
     }
 
     /**
-     * This method adds a ShoppingCart along with its cartID to
+     * This method adds a store.ShoppingCart along with its cartID to
      * carts (the HashMap that keeps track of the cartIDs and their shopping carts)
      *
-     * @param shoppingCart ShoppingCart, the new shopping cart being added
+     * @param shoppingCart store.ShoppingCart, the new shopping cart being added
      */
     public void addShoppingCart(ShoppingCart shoppingCart){
         this.carts.put(numCarts, shoppingCart);
@@ -88,7 +89,7 @@ public class StoreManager {
      * This method gets the cart of the shopping cart given its cartID
      *
      * @param cartId int, the cartID associated with the specific shopping cart
-     * @return ArrayList<Product>, the arraylist of the cart of the shopping cart
+     * @return ArrayList<store.Product>, the arraylist of the cart of the shopping cart
      */
     public ArrayList<Product> getSMCart(int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
@@ -120,7 +121,7 @@ public class StoreManager {
         if(shoppingCart.getCart().isEmpty()){
             shoppingCart.getCart().add(managerInventory.getProduct(productID));
             shoppingCart.getItemsInCart().add(amountOfProduct);
-            // Decrease stock in store Inventory when user adds something to cart
+            // Decrease stock in store store.Inventory when user adds something to cart
             managerInventory.removeStock(productID, amountOfProduct);
         }
         else {
@@ -141,7 +142,7 @@ public class StoreManager {
             }
             // Update the carts HashMap with the new additions
             carts.put(cartId, shoppingCart);
-            // Decrease stock in store Inventory when user adds something to cart
+            // Decrease stock in store store.Inventory when user adds something to cart
             managerInventory.removeStock(productID, amountOfProduct);
         }
     }
@@ -177,14 +178,22 @@ public class StoreManager {
         }
         // Update the carts HashMap after removals
         carts.put(cartId, shoppingCart);
-        // Add stock in store Inventory when user removes something to cart
+        // Add stock in store store.Inventory when user removes something to cart
         managerInventory.addStock(managerInventory.getProduct(productID) ,removedProduct);
+    }
+
+    /**
+     * This method is an accessor for the carts hashmap
+     * @return HashMap<Integer,ShoppingCart> carts
+     */
+    public HashMap<Integer,ShoppingCart> getCarts(){
+        return this.carts;
     }
 
     /**
      * This method takes an order in the form of two parallel arrayLists and completes the store transaction
      *
-     * @param items ArrayList<Product>, the products being purchased
+     * @param items ArrayList<store.Product>, the products being purchased
      * @param quantities ArrayList<Integer>, the quantities of each product being purchased
      * @return double, the total price for order purchase
      */

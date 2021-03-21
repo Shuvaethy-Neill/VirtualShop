@@ -1,3 +1,5 @@
+package store;
+
 import java.util.Arrays;
 
 public class Main {

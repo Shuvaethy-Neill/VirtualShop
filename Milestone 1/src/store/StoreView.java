@@ -1,3 +1,5 @@
+package store;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -7,7 +9,7 @@ import java.util.Scanner;
 // Partner: Shuvaethy Neill 101143478
 
 /**
- * This StoreView class is the entry point of the store system
+ * This store.StoreView class is the entry point of the store system
  * For this milestone, the user interface is textually displayed in the console
  *
  * @author Andre Hazim
@@ -23,15 +25,15 @@ public class StoreView {
     private int cartId;
 
     /**
-     * The constructor for StoreView
+     * The constructor for store.StoreView
      *
-     * @param storeManager StoreManager
+     * @param storeManager store.StoreManager
      * @param cartID int, the id of the cart for a specific storeview
      */
     public StoreView(StoreManager storeManager, int cartID) {
         this.storeManager = storeManager;
         this.cartId = cartID;
-        // Adds ShoppingCart to hashmap in StoreManager to keep track
+        // Adds store.ShoppingCart to hashmap in store.StoreManager to keep track
         storeManager.addShoppingCart(new ShoppingCart(cartID));
     }
 
@@ -53,7 +55,7 @@ public class StoreView {
     }
 
     /**
-     * This method adds a product to cart by StoreManager
+     * This method adds a product to cart by store.StoreManager
      *
      * @param productID int, the id of the product to be added
      * @param amountToAdd int, the amount of the product to add
@@ -67,7 +69,7 @@ public class StoreView {
     }
 
     /**
-     * This method removes product from the cart by StoreManager
+     * This method removes product from the cart by store.StoreManager
      *
      * @param productID  int, the id of the product to be removed
      * @param amountToRemove int, the amount of the product to remove
@@ -110,7 +112,7 @@ public class StoreView {
         Inventory inv = storeManager.getStoreInventory();
         System.out.println("The Computer Store");
         System.out.println("-BROWSE-");
-        System.out.println("ID | Product | Price | Stock");
+        System.out.println("ID | store.Product | Price | Stock");
         for (int i = 1; i < inv.getProductList().size() + 1; i++) {
             System.out.println( i + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
                     inv.getStock(i));

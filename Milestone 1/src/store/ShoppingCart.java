@@ -1,11 +1,12 @@
+package store;
+
 import java.util.ArrayList;
-import java.util.Locale;
 
 // Written by: Andre Hazim 101141843
 // Edited by: Shuvaethy Neill 101143478
 
 /**
- * This ShoppingCart class models a user's shopping cart
+ * This store.ShoppingCart class models a user's shopping cart
  *
  * @author Andre Hazim
  *
@@ -39,7 +40,7 @@ public class ShoppingCart {
 
     /**
      * The accessor of the cart attribute
-     * @return ArrayList<Product> the cart of the shopping cart will be returned
+     * @return ArrayList<store.Product> the cart of the shopping cart will be returned
      */
     public ArrayList<Product> getCart(){
         return this.cart;

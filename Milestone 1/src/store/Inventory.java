@@ -1,4 +1,4 @@
-// Written by: Andre Hazim 101141843
+package store;// Written by: Andre Hazim 101141843
 // Partner: Shuvaethy Neill 101143478
 
 /**
@@ -18,7 +18,7 @@ public class Inventory {
     private ArrayList<Product> products; // The products the store sells
 
     /**
-     * Constructor for Inventory Class
+     * Constructor for store.Inventory Class
      * Initialize both arraylists for quantities and products
      * Creates default products
      */
@@ -63,7 +63,7 @@ public class Inventory {
 
     /**
      * Adds a stock to a product given a name and a stock amount
-     * @param product Product, the specific product
+     * @param product store.Product, the specific product
      * @param stock int, the specific amount of stock being added
      */
     public void addStock(Product product, int stock){
@@ -162,7 +162,7 @@ public class Inventory {
     /**
      * This method gives access to a product
      * @param productID int, the product's id
-     * @return Product, product given it's id
+     * @return store.Product, product given it's id
      */
     public Product getProduct(int productID){
         int i = 0;
