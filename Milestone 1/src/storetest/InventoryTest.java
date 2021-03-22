@@ -1,6 +1,6 @@
 // Written by: Shuvaethy Neill 101143478 and Andre Hazim 101141843
 
-
+package storetest;
 import org.junit.jupiter.api.*;
 import store.Inventory;
 import store.Product;
@@ -86,7 +86,7 @@ class InventoryTest {
         // Add a product to inventory and corresponding stock
         inventory.addStock(newProduct,123);
         // Check if new product exists in inventory
-        assertTrue(inventory.getProductList().contains(inventory.getProduct(6)));
+        assertTrue(inventory.getProductList().contains(inventory.getProduct(6)),"Product does not exist");
         assertEquals(123, inventory.getStock(6),"The new item was not correctly added, there is an issue with addStock");
     }
 
