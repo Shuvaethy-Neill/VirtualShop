@@ -1,8 +1,9 @@
-package store;// Written by: Andre Hazim 101141843
+package store;
+// Written by: Andre Hazim 101141843
 // Edited by: Shuvaethy Neill 101143478
 
 /**
- * The store.Product class is a template for products that will be sold in the store
+ * The Product class is a template for products that will be sold in the store
  * @author Andre Hazim
  *
  * @version 1.0
