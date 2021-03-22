@@ -42,6 +42,7 @@ public class ShoppingCart  {
      * adds items to the cart
      * @param productID the id of the product
      * @param amountOfProduct the amount of product to be added
+     * @param inventory the inventory that we will take the item out of
      */
     public void addToCart(int productID, int amountOfProduct, Inventory inventory){
         if (cart.isEmpty()){

@@ -45,8 +45,8 @@ public class StoreView {
      */
     private boolean checkInCart(int productID){
         boolean inCart = false;
-        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
-            if (productID== storeManager.getSMCart(this.cartId).get(i).getId()){
+        for (int i = 0; i < this.storeManager.getSMCart(this.cartId).size(); i++) {
+            if (productID== this.storeManager.getSMCart(this.cartId).get(i).getId()){
                 inCart = true;
             }
 
@@ -62,8 +62,8 @@ public class StoreView {
      */
     private void addToCart(int productID, int amountToAdd) {
         System.out.println("-ADD-");
-        System.out.println("Adding "+amountToAdd + " "+ storeManager.getStoreInventory().getProductName(productID)+"(s)");
-        storeManager.addToCart(productID, amountToAdd, this.cartId);
+        System.out.println("Adding "+amountToAdd + " "+ this.storeManager.getStoreInventory().getProductName(productID)+"(s)");
+        this.storeManager.addToCart(productID, amountToAdd, this.cartId);
 
         this.viewCart();
     }
@@ -77,8 +77,8 @@ public class StoreView {
     private void removeFromCart(int productID, int amountToRemove) {
 
         System.out.println("-REMOVE-");
-        System.out.println("Removing "+amountToRemove + " "+ storeManager.getStoreInventory().getProductName(productID));
-        storeManager.removeFromCart(productID, amountToRemove,this.cartId);
+        System.out.println("Removing "+amountToRemove + " "+ this.storeManager.getStoreInventory().getProductName(productID));
+        this.storeManager.removeFromCart(productID, amountToRemove,this.cartId);
 
         this.viewCart();
     }
@@ -87,10 +87,10 @@ public class StoreView {
      * This method removes everything from the cart when a user exits
      */
     private void removeEverythingFromCart(){
-        for (int i =  storeManager.getSMCart(this.cartId).size()-1; i >= 0 ; i--) {
+        for (int i =  this.storeManager.getSMCart(this.cartId).size()-1; i >= 0 ; i--) {
 
-            storeManager.removeFromCart( storeManager.getSMCart(this.cartId).get(i).getId(),
-                    storeManager.getSMItemsInCart(this.cartId).get(i),this.cartId);
+            this.storeManager.removeFromCart( this.storeManager.getSMCart(this.cartId).get(i).getId(),
+                    this.storeManager.getSMItemsInCart(this.cartId).get(i),this.cartId);
         }
     }
 
@@ -109,7 +109,7 @@ public class StoreView {
      * This method displays the stores current inventory
      */
     private void browse() {
-        Inventory inv = storeManager.getStoreInventory();
+        Inventory inv = this.storeManager.getStoreInventory();
         System.out.println("The Computer Store");
         System.out.println("-BROWSE-");
         System.out.println("ID | store.Product | Price | Stock");
@@ -124,9 +124,9 @@ public class StoreView {
      */
     private void viewCart() {
         System.out.print("Your Cart : ");
-        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
-            System.out.print("("+storeManager.getSMCart(this.cartId).get(i).getName() + ", " + storeManager.getSMItemsInCart(this.cartId).get(i)+")"); //
-            if (i == storeManager.getSMCart(this.cartId).size()-1){
+        for (int i = 0; i < this.storeManager.getSMCart(this.cartId).size(); i++) {
+            System.out.print("("+this.storeManager.getSMCart(this.cartId).get(i).getName() + ", " + this.storeManager.getSMItemsInCart(this.cartId).get(i)+")"); //
+            if (i == this.storeManager.getSMCart(this.cartId).size()-1){
                 System.out.print("");
             }else {
                 System.out.print(", ");
@@ -140,7 +140,7 @@ public class StoreView {
      * @return double, the total price
      */
     private double getTotal() {
-        return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
+        return this.storeManager.orderTransaction(this.storeManager.getSMCart(this.cartId), this.storeManager.getSMItemsInCart(this.cartId));
     }
 
     /**
@@ -153,9 +153,7 @@ public class StoreView {
             System.out.println("Thank you for shopping at the computer store");
         }
     }
-    private void displayGUI(){
 
-    }
 
     public static void main(String[] args) {
         StoreManager storeManager1 = new StoreManager();
