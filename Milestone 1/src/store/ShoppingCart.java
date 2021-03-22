@@ -41,7 +41,7 @@ public class ShoppingCart  {
     /**
      * adds items to the cart
      * @param productID the id of the product
-     * @param amountOfProduct the ammount of product to be added
+     * @param amountOfProduct the amount of product to be added
      */
     public void addToCart(int productID, int amountOfProduct, Inventory inventory){
         if (cart.isEmpty()){
@@ -97,7 +97,7 @@ public class ShoppingCart  {
 
     /**
      * The accessor of the cart attribute
-     * @return ArrayList<store.Product> the cart of the shopping cart will be returned
+     * @return ArrayList<Product> the cart of the shopping cart will be returned
      */
     public ArrayList<Product> getCart(){
         return this.cart;
