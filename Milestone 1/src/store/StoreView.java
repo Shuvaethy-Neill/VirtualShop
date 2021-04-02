@@ -1,7 +1,15 @@
 package store;
 
+import store.StoreManager;
+
+import javax.swing.*;
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -9,7 +17,7 @@ import java.util.Scanner;
 // Partner: Shuvaethy Neill 101143478
 
 /**
- * This store.StoreView class is the entry point of the store system
+ * This StoreView class is the entry point of the store system
  * For this milestone, the user interface is textually displayed in the console
  *
  * @author Andre Hazim
@@ -21,19 +29,32 @@ import java.util.Scanner;
  */
 
 public class StoreView {
+    private final JFrame frame;
+    private List<JPanel> productPanels;
+    private int[] stockToAdd;
+    private List<JLabel> stockToAddLabel;
     private StoreManager storeManager;
     private int cartId;
 
     /**
-     * The constructor for store.StoreView
+     * The constructor for StoreView
      *
-     * @param storeManager store.StoreManager
-     * @param cartID int, the id of the cart for a specific storeview
+     * @param storeManager StoreManager
+     * @param cartID       int, the id of the cart for a specific storeview
      */
     public StoreView(StoreManager storeManager, int cartID) {
+        this.frame = new JFrame();
+        this.productPanels = new ArrayList<JPanel>();
+        this.stockToAdd = new int[] {0,0,0,0,0};
+        this.stockToAddLabel = new ArrayList<JLabel>();
+        for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
+
+            JLabel stock = new JLabel(String.valueOf(stockToAdd[i]));
+            this.stockToAddLabel.add(stock);
+        }
         this.storeManager = storeManager;
         this.cartId = cartID;
-        // Adds store.ShoppingCart to hashmap in store.StoreManager to keep track
+        // Adds ShoppingCart to hashmap in StoreManager to keep track
         storeManager.addShoppingCart(new ShoppingCart(cartID));
     }
 
@@ -43,10 +64,10 @@ public class StoreView {
      * @param productID int, the id of the product
      * @return a boolean, true if the item is in the cart or false otherwise
      */
-    private boolean checkInCart(int productID){
+    private boolean checkInCart(int productID) {
         boolean inCart = false;
-        for (int i = 0; i < this.storeManager.getSMCart(this.cartId).size(); i++) {
-            if (productID== this.storeManager.getSMCart(this.cartId).get(i).getId()){
+        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
+            if (productID == storeManager.getSMCart(this.cartId).get(i).getId()) {
                 inCart = true;
             }
 
@@ -55,30 +76,30 @@ public class StoreView {
     }
 
     /**
-     * This method adds a product to cart by store.StoreManager
+     * This method adds a product to cart by StoreManager
      *
-     * @param productID int, the id of the product to be added
+     * @param productID   int, the id of the product to be added
      * @param amountToAdd int, the amount of the product to add
      */
     private void addToCart(int productID, int amountToAdd) {
         System.out.println("-ADD-");
-        System.out.println("Adding "+amountToAdd + " "+ this.storeManager.getStoreInventory().getProductName(productID)+"(s)");
-        this.storeManager.addToCart(productID, amountToAdd, this.cartId);
+        System.out.println("Adding " + amountToAdd + " " + storeManager.getStoreInventory().getProductName(productID) + "(s)");
+        storeManager.addToCart(productID, amountToAdd, this.cartId);
 
         this.viewCart();
     }
 
     /**
-     * This method removes product from the cart by store.StoreManager
+     * This method removes product from the cart by StoreManager
      *
-     * @param productID  int, the id of the product to be removed
+     * @param productID      int, the id of the product to be removed
      * @param amountToRemove int, the amount of the product to remove
      */
     private void removeFromCart(int productID, int amountToRemove) {
 
         System.out.println("-REMOVE-");
-        System.out.println("Removing "+amountToRemove + " "+ this.storeManager.getStoreInventory().getProductName(productID));
-        this.storeManager.removeFromCart(productID, amountToRemove,this.cartId);
+        System.out.println("Removing " + amountToRemove + " " + storeManager.getStoreInventory().getProductName(productID));
+        storeManager.removeFromCart(productID, amountToRemove, this.cartId);
 
         this.viewCart();
     }
@@ -86,11 +107,11 @@ public class StoreView {
     /**
      * This method removes everything from the cart when a user exits
      */
-    private void removeEverythingFromCart(){
-        for (int i =  this.storeManager.getSMCart(this.cartId).size()-1; i >= 0 ; i--) {
+    private void removeEverythingFromCart() {
+        for (int i = storeManager.getSMCart(this.cartId).size() - 1; i >= 0; i--) {
 
-            this.storeManager.removeFromCart( this.storeManager.getSMCart(this.cartId).get(i).getId(),
-                    this.storeManager.getSMItemsInCart(this.cartId).get(i),this.cartId);
+            storeManager.removeFromCart(storeManager.getSMCart(this.cartId).get(i).getId(),
+                    storeManager.getSMItemsInCart(this.cartId).get(i), this.cartId);
         }
     }
 
@@ -109,12 +130,12 @@ public class StoreView {
      * This method displays the stores current inventory
      */
     private void browse() {
-        Inventory inv = this.storeManager.getStoreInventory();
+        Inventory inv = storeManager.getStoreInventory();
         System.out.println("The Computer Store");
         System.out.println("-BROWSE-");
-        System.out.println("ID | store.Product | Price | Stock");
+        System.out.println("ID | Product | Price | Stock");
         for (int i = 1; i < inv.getProductList().size() + 1; i++) {
-            System.out.println( i + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
+            System.out.println(i + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
                     inv.getStock(i));
         }
     }
@@ -124,11 +145,11 @@ public class StoreView {
      */
     private void viewCart() {
         System.out.print("Your Cart : ");
-        for (int i = 0; i < this.storeManager.getSMCart(this.cartId).size(); i++) {
-            System.out.print("("+this.storeManager.getSMCart(this.cartId).get(i).getName() + ", " + this.storeManager.getSMItemsInCart(this.cartId).get(i)+")"); //
-            if (i == this.storeManager.getSMCart(this.cartId).size()-1){
+        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
+            System.out.print("(" + storeManager.getSMCart(this.cartId).get(i).getName() + ", " + storeManager.getSMItemsInCart(this.cartId).get(i) + ")"); //
+            if (i == storeManager.getSMCart(this.cartId).size() - 1) {
                 System.out.print("");
-            }else {
+            } else {
                 System.out.print(", ");
             }
         }
@@ -137,33 +158,160 @@ public class StoreView {
 
     /**
      * This method gets the total for the transaction
+     *
      * @return double, the total price
      */
     private double getTotal() {
-        return this.storeManager.orderTransaction(this.storeManager.getSMCart(this.cartId), this.storeManager.getSMItemsInCart(this.cartId));
+        return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
     }
 
     /**
      * this method will do the transaction
-     * @param total double the total amount the user must pay
+     *
+     * @param total       double the total amount the user must pay
      * @param amountToPay double the amount the user pays it is assumed that they payed in full
      */
-    private void transaction(double total, double amountToPay){
-        if(amountToPay>=total){
+    private void transaction(double total, double amountToPay) {
+        if (amountToPay >= total) {
             System.out.println("Thank you for shopping at the computer store");
         }
+    }
+    /**
+     * Get random colours of a certain brightness
+     * @return Color, A Color object with the generated colour.
+     */
+    private Color getColour() {
+        int r = (int)(Math.random()*256);
+        int g = (int)(Math.random()*256);
+        int b = (int)(Math.random()*256);
+        double luma = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+
+        while (luma < 75) {
+            r = (int)(Math.random()*256);
+            g = (int)(Math.random()*256);
+            b = (int)(Math.random()*256);
+            luma = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+        }
+        return new Color(r, g, b);
+    }
+
+    private JButton getRemoveB(int productId) {
+        JButton removeB = new JButton("-");
+        //removeB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        removeB.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            stockToAdd[productId-1] -= 1;
+
+            stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
+        }
+    });
+        return removeB;
+    }
+
+    private JButton getAddB(int productId) {
+        JButton addB = new JButton("+");
+        //addB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        addB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                stockToAdd[productId-1] += 1;
+
+                stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
+            }
+        });
+        return addB;
+    }
+
+    private JButton getViewCartB() {
+        JButton viewCartB = new JButton("View Cart");
+        viewCartB.setPreferredSize(new Dimension(30, 20));
+        return viewCartB;
+    }
+
+    private JButton getCheckoutB() {
+        JButton checkoutB = new JButton("Checkout");
+        checkoutB.setPreferredSize(new Dimension(30, 20));
+        return checkoutB;
+    }
+
+    private JButton getQuitB() {
+        JButton quitB = new JButton("Quit");
+        quitB.setPreferredSize(new Dimension(30, 20));
+        return quitB;
+    }
+
+    /**
+     * Method that enables the features displayed within the GUI
+     */
+    private void displayGUI() {
+        this.frame.setTitle("Client StoreView");
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        // header
+        JLabel headerLabel = new JLabel("Welcome to our store! Cart ID:");
+        JPanel headerPanel = new JPanel();
+        headerPanel.add(headerLabel);
+        headerPanel.setPreferredSize(new Dimension(250, 100));
+        mainPanel.add(headerPanel, BorderLayout.PAGE_START);
+
+        // body
+        JPanel bodyPanel = new JPanel(new GridLayout());
+        mainPanel.add(bodyPanel, BorderLayout.CENTER);
+
+
+        // Add the product panels
+        for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
+            this.productPanels.add(i, new JPanel(new BorderLayout()));
+            // Create layout and border with product name
+            this.productPanels.get(i).setBorder(BorderFactory.createTitledBorder(storeManager.getStoreInventory().getProductName(i+1)));
+            this.productPanels.get(i).setPreferredSize(new Dimension(200, 150));
+            BoxLayout layout = new BoxLayout(this.productPanels.get(i), BoxLayout.Y_AXIS);
+            this.productPanels.get(i).setLayout(layout);
+
+            JLabel productStock = new JLabel("Price: " +storeManager.getStoreInventory().getProduct(i+1).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(i+1));;
+            productStock.setAlignmentX(Component.CENTER_ALIGNMENT);
+            this.productPanels.get(i).add(productStock);
+
+            // Add the add and remove buttons to the product panel
+            JPanel buttonPanel = new JPanel(new FlowLayout());
+            this.productPanels.get(i).add(buttonPanel);
+            buttonPanel.add(getAddB(i+1));
+            buttonPanel.add(getRemoveB(i+1));
+
+            bodyPanel.add(this.productPanels.get(i));
+            this.productPanels.get(i).add(stockToAddLabel.get(i));
+        }
+
+        // Add the control buttons
+        bodyPanel.add(getViewCartB());
+        bodyPanel.add(getCheckoutB());
+        bodyPanel.add(getQuitB());
+
+        // pack
+        frame.add(mainPanel);
+        frame.pack();
+
+        this.frame.setVisible(true);
+
     }
 
 
     public static void main(String[] args) {
         StoreManager storeManager1 = new StoreManager();
         StoreView storeView1 = new StoreView(storeManager1, storeManager1.generateCartID());
+        storeView1.displayGUI();
+        /*
         StoreView storeView2 = new StoreView(storeManager1, storeManager1.generateCartID());
         StoreView storeView3 = new StoreView(storeManager1, storeManager1.generateCartID());
         ArrayList<StoreView> users = new ArrayList<StoreView>();
         users.add(storeView1);
         users.add(storeView2);
         users.add(storeView3);
+
         int activeSV = users.size();
         int rangeOfProducts = storeManager1.getStoreInventory().getProductList().size();
         Inventory inv = storeManager1.getStoreInventory();
@@ -338,4 +486,8 @@ public class StoreView {
         }
         System.out.println("ALL STOREVIEWS DEACTIVATED");
     }
+
+         */
+    }
+
 }
