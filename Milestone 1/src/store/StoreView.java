@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-// Written by: Andre Hazim 101141843
-// Partner: Shuvaethy Neill 101143478
+// Written by: Andre Hazim 101141843 and Shuvaethy Neill 101143478
 
 /**
  * This StoreView class is the entry point of the store system
@@ -59,7 +58,8 @@ public class StoreView {
         this.stockToAddLabel = new ArrayList<JLabel>();
         for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
 
-            JLabel stock = new JLabel(String.valueOf(stockToAdd[i]));
+            JLabel stock = new JLabel("Quantity: " + stockToAdd[i]);
+            stock.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.stockToAddLabel.add(stock);
         }
         this.buttonArray = new JButton[5][];
@@ -200,6 +200,15 @@ public class StoreView {
         }
     }
 
+    private void enableAdd(int productId){
+        if(stockToAdd[productId] > 0){
+            buttonArray[productId][2].setEnabled(true);
+        }
+        else{
+            buttonArray[productId][2].setEnabled(false);
+        }
+    }
+
     private JButton getRemoveB(int productId) {
         JButton removeB = new JButton("-");
         removeB.setEnabled(false);
@@ -215,7 +224,8 @@ public class StoreView {
                 if (stockToAdd[productId-1] == 0 ){
                     buttonArray[productId-1][1].setEnabled(false);
                 }
-                stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
+                stockToAddLabel.get(productId - 1).setText("Quantity: " + stockToAdd[productId-1]);
+                enableAdd(productId-1);
             }
         });
         return removeB;
@@ -235,7 +245,8 @@ public class StoreView {
                 if(stockToAdd[productId-1] > 0){
                     buttonArray[productId-1][1].setEnabled(true);
                 }
-                stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
+                stockToAddLabel.get(productId - 1).setText("Quantity: " + stockToAdd[productId-1]);
+                enableAdd(productId-1);
             }
         });
         return addB;
@@ -244,6 +255,7 @@ public class StoreView {
 
     private JButton getAddToCart(int productId){
         JButton addToCart = new JButton("Add to Cart");
+        addToCart.setEnabled(false);
         addToCart.setPreferredSize(new Dimension(40, 20));
         addToCart.addActionListener(new ActionListener() {
             @Override
@@ -251,8 +263,9 @@ public class StoreView {
                 addToCart(productId, stockToAdd[productId-1]);
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
                 stockToAdd[productId - 1] = 0;
-                stockToAddLabel.get(productId - 1).setText(String.valueOf(stockToAdd[productId-1]));
+                stockToAddLabel.get(productId - 1).setText("Quantity: " + stockToAdd[productId-1]);
                 enableRemove(productId - 1);
+                enableAdd(productId-1);
             }
         });
 
@@ -265,7 +278,6 @@ public class StoreView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
-
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
                 removeFromCart.setEnabled(false);
             }
@@ -429,17 +441,16 @@ public class StoreView {
             productLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.productLabels[i] = productLabel;
             this.productPanels.get(i).add(this.productLabels[i]);
-            this.productPanels.get(i).add(getAddToCart(i+1));
-
-            //this.productPanels.get(i).add(getProductImageLabels(i));
+            //this.productPanels.get(i).add(getAddToCart(i+1));
 
             // Add the add and remove buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
-            JButton[] buttonPair = {getAddB(i+1),getRemoveB(i+1) };
-            this.buttonArray[i] = buttonPair;
+            JButton[] threeButtons = {getAddB(i+1),getRemoveB(i+1), getAddToCart(i+1)};
+            this.buttonArray[i] = threeButtons;
             this.productPanels.get(i).add(buttonPanel);
             buttonPanel.add(this.buttonArray[i][0]);
             buttonPanel.add(this.buttonArray[i][1]);
+            buttonPanel.add(this.buttonArray[i][2]);
 
             bodyPanel.add(this.productPanels.get(i));
             this.productPanels.get(i).add(stockToAddLabel.get(i));
