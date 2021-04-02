@@ -2,6 +2,7 @@ package store;
 
 import store.StoreManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -10,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -40,6 +43,7 @@ public class StoreView {
     private StoreManager storeManager;
     private JButton[][] buttonArray;
     private JLabel[] productLabels;
+    private JLabel[] productImageLabels;
     private int cartId;
 
     /**
@@ -60,6 +64,7 @@ public class StoreView {
         }
         this.buttonArray = new JButton[5][];
         this.productLabels = new JLabel[5];
+        this.productImageLabels = new JLabel[5];
         this.storeManager = storeManager;
         this.cartId = cartID;
         // Adds ShoppingCart to hashmap in StoreManager to keep track
@@ -185,50 +190,41 @@ public class StoreView {
             System.out.println("Thank you for shopping at the computer store");
         }
     }
-    /**
-     * Get random colours of a certain brightness
-     * @return Color, A Color object with the generated colour.
-     */
-    private Color getColour() {
-        int r = (int)(Math.random()*256);
-        int g = (int)(Math.random()*256);
-        int b = (int)(Math.random()*256);
-        double luma = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
 
-        while (luma < 75) {
-            r = (int)(Math.random()*256);
-            g = (int)(Math.random()*256);
-            b = (int)(Math.random()*256);
-            luma = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+    private void enableRemove(int productId){
+        if(stockToAdd[productId] > 0){
+            buttonArray[productId][1].setEnabled(true);
         }
-        return new Color(r, g, b);
+        else{
+            buttonArray[productId][1].setEnabled(false);
+        }
     }
 
     private JButton getRemoveB(int productId) {
         JButton removeB = new JButton("-");
         removeB.setEnabled(false);
-        //removeB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        removeB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         removeB.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-            stockToAdd[productId-1] -= 1;
-            if(stockToAdd[productId-1] != storeManager.getStoreInventory().getStock(productId) && !buttonArray[productId-1][0].isEnabled()){
-                buttonArray[productId-1][0].setEnabled(true);
+                stockToAdd[productId-1] -= 1;
+                if(stockToAdd[productId-1] != storeManager.getStoreInventory().getStock(productId) && !buttonArray[productId-1][0].isEnabled()){
+                    buttonArray[productId-1][0].setEnabled(true);
+                }
+                if (stockToAdd[productId-1] == 0 ){
+                    buttonArray[productId-1][1].setEnabled(false);
+                }
+                stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
             }
-            if (stockToAdd[productId-1] == 0 ){
-                buttonArray[productId-1][1].setEnabled(false);
-            }
-            stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
-        }
-    });
+        });
         return removeB;
     }
 
     private JButton getAddB(int productId) {
         JButton addB = new JButton("+");
 
-        //addB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        addB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         addB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -254,6 +250,9 @@ public class StoreView {
             public void actionPerformed(ActionEvent e) {
                 addToCart(productId, stockToAdd[productId-1]);
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
+                stockToAdd[productId - 1] = 0;
+                stockToAddLabel.get(productId - 1).setText(String.valueOf(stockToAdd[productId-1]));
+                enableRemove(productId - 1);
             }
         });
 
@@ -282,7 +281,7 @@ public class StoreView {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                    JFrame f = new JFrame("Cart View");
+                JFrame f = new JFrame("Cart View");
 
 
                 f.setSize(400, 400);
@@ -290,21 +289,15 @@ public class StoreView {
                 BoxLayout layout = new BoxLayout(p1, BoxLayout.Y_AXIS);
                 p1.setLayout(layout);
                 p1.setPreferredSize(new Dimension(400,400));
-                JLabel[] productName = new JLabel[5];
-                JLabel[] numProducts = new JLabel[5];
+                p1.add(new JLabel("Your cart:"));
+                JLabel[] productInfo = new JLabel[5];
                 JButton[] removeButtons = new JButton[5];
                 for (int i = 0; i < storeManager.getSMCart(cartId).size(); i++) {
-                    productName[i] = new JLabel(storeManager.getSMCart(cartId).get(i).getName());
-                    numProducts[i] = new JLabel(String.valueOf(storeManager.getSMItemsInCart(cartId).get(i)));
+                    productInfo[i] = new JLabel(storeManager.getSMCart(cartId).get(i).getName() + ": " + storeManager.getSMItemsInCart(cartId).get(i));
                     removeButtons[i] = getRemoveFromCart(storeManager.getSMCart(cartId).get(i).getId(),i);
-                    p1.add(productName[i]);
-                    p1.add(numProducts[i]);
+                    p1.add(productInfo[i]);
                     p1.add(removeButtons[i]);
-
                 }
-
-
-
 
                 f.add(p1);
                 f.pack();
@@ -318,6 +311,59 @@ public class StoreView {
     private JButton getCheckoutB() {
         JButton checkoutB = new JButton("Checkout");
         checkoutB.setPreferredSize(new Dimension(30, 20));
+        checkoutB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JFrame f = new JFrame("Checkout");
+
+
+                f.setSize(400, 400);
+                JPanel p1 = new JPanel(new BorderLayout());
+                BoxLayout layout = new BoxLayout(p1, BoxLayout.Y_AXIS);
+                p1.setLayout(layout);
+                p1.setPreferredSize(new Dimension(400,400));
+                JLabel[] productInfo = new JLabel[5];
+                JLabel[] productPrice = new JLabel[5];
+                JLabel[] border = new JLabel[5];
+                for (int i = 0; i < storeManager.getSMCart(cartId).size(); i++) {
+                    productInfo[i] = new JLabel(storeManager.getSMCart(cartId).get(i).getName() + ": " + storeManager.getSMItemsInCart(cartId).get(i));
+                    productPrice[i] = new JLabel("$" + storeManager.getSMCart(cartId).get(i).getPrice());
+                    border[i] =  new JLabel("----------------");
+                    p1.add(productInfo[i]);
+                    p1.add(productPrice[i]);
+                    p1.add(border[i]);
+                }
+                JLabel total = new JLabel("Total: " + getTotal());
+                p1.add(total);
+
+                JButton okB = new JButton("OK");
+                okB.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        f.setVisible(false);
+                        f.dispose();
+                        frame.setVisible(false);
+                        frame.dispose();
+                    }
+                });
+                f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent we) {
+                        f.setVisible(false);
+                        f.dispose();
+                    }
+                });
+
+                p1.add(okB);
+
+                f.add(p1);
+                f.pack();
+
+                f.setVisible(true);
+            }
+        });
         return checkoutB;
     }
 
@@ -375,7 +421,7 @@ public class StoreView {
             this.productPanels.add(i, new JPanel(new BorderLayout()));
             // Create layout and border with product name
             this.productPanels.get(i).setBorder(BorderFactory.createTitledBorder(storeManager.getStoreInventory().getProductName(i+1)));
-            this.productPanels.get(i).setPreferredSize(new Dimension(200, 150));
+            this.productPanels.get(i).setPreferredSize(new Dimension(200, 300));
             BoxLayout layout = new BoxLayout(this.productPanels.get(i), BoxLayout.Y_AXIS);
             this.productPanels.get(i).setLayout(layout);
 
@@ -384,6 +430,8 @@ public class StoreView {
             this.productLabels[i] = productLabel;
             this.productPanels.get(i).add(this.productLabels[i]);
             this.productPanels.get(i).add(getAddToCart(i+1));
+
+            //this.productPanels.get(i).add(getProductImageLabels(i));
 
             // Add the add and remove buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -422,11 +470,9 @@ public class StoreView {
         users.add(storeView1);
         users.add(storeView2);
         users.add(storeView3);
-
         int activeSV = users.size();
         int rangeOfProducts = storeManager1.getStoreInventory().getProductList().size();
         Inventory inv = storeManager1.getStoreInventory();
-
         Scanner sc = new Scanner(System.in);
         while (activeSV > 0) {
             System.out.print("CHOOSE YOUR STOREVIEW (integer input) >>> ");
@@ -437,12 +483,10 @@ public class StoreView {
                 }catch (InputMismatchException ime){
                     System.out.println("Please input an integer for a store id");
                     sc.next();
-
                 }
             }
             if (choice < users.size() && choice >= 0){
                 String chooseAnother = "";
-
                 // Checks if they want to change the storeview
                 while (!chooseAnother.equals("y") && !chooseAnother.equals("Y")){
                     System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to disconnect "+
@@ -463,10 +507,8 @@ public class StoreView {
                                 }catch (InputMismatchException ime){
                                     System.out.println("Please pick a product id");
                                     sc.next();
-
                                 }
                             }
-
                             // Checks if the user has picked from the range of products they has
                             while (!users.get(choice).checkInCart(productNumber)) {
                                 System.out.println("Please pick a product id for a product you have");
@@ -477,7 +519,6 @@ public class StoreView {
                                     }catch (InputMismatchException ime){
                                         System.out.println("Please pick a product id");
                                         sc.next();
-
                                     }
                                 }
                             }
@@ -489,7 +530,6 @@ public class StoreView {
                                 }catch (InputMismatchException ime){
                                     System.out.println("Please enter a number");
                                     sc.next();
-
                                 }
                             }
                             users.get(choice).removeFromCart(productNumber, amountOfProduct);
@@ -508,10 +548,8 @@ public class StoreView {
                             }catch (InputMismatchException ime){
                                 System.out.println("Please pick a product id");
                                 sc.next();
-
                             }
                         }
-
                         // Checks to see if the user has picked the correct product id
                         while (productNumber > rangeOfProducts || productNumber <=0 || inv.getStock(productNumber) == 0){
                             System.out.println("Please pick a product id in the range 1-"+ rangeOfProducts + " and that has available stock");
@@ -522,11 +560,9 @@ public class StoreView {
                                 }catch (InputMismatchException ime){
                                     System.out.println("Please pick a product id");
                                     sc.next();
-
                                 }
                             }
                         }
-
                         System.out.println("Enter the product amount to add");
                         int amountOfProduct = -1;
                         while (amountOfProduct == -1){
@@ -535,10 +571,8 @@ public class StoreView {
                             }catch (InputMismatchException ime){
                                 System.out.println("Please enter a number");
                                 sc.next();
-
                             }
                         }
-
                         //Checks if the user has picked from the range of products the store has
                         while (amountOfProduct > inv.getStock(productNumber) || amountOfProduct <= 0){
                             System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
@@ -549,7 +583,6 @@ public class StoreView {
                                 }catch (InputMismatchException ime){
                                     System.out.println("Please enter a number");
                                     sc.next();
-
                                 }
                             }
                         }
@@ -589,7 +622,6 @@ public class StoreView {
                         chooseAnother = "y";
                     }
                 }
-
             }else{
                 System.out.println(String.format("MAIN > ERROR > BAD CHOICE\nPLEASE CHOOSE IN RANGE [%d, %d]",
                         0, users.size() - 1));
@@ -597,8 +629,6 @@ public class StoreView {
         }
         System.out.println("ALL STOREVIEWS DEACTIVATED");
     }
-
          */
     }
-
 }
