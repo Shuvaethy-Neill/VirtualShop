@@ -1,5 +1,6 @@
 package store;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -177,7 +178,10 @@ public class StoreManager {
             total += (quantities.get(i) * managerInventory.getPrice(items.get(i).getId()));
         }
 
+        DecimalFormat df = new DecimalFormat("#.##");
+        total = Double.valueOf(df.format(total));
         System.out.println("Your total is: " + total);
+
         return total;
     }
 }
