@@ -7,6 +7,7 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -34,6 +35,7 @@ public class StoreView {
     private int[] stockToAdd;
     private List<JLabel> stockToAddLabel;
     private StoreManager storeManager;
+    private JButton[][] buttonArray;
     private int cartId;
 
     /**
@@ -52,6 +54,7 @@ public class StoreView {
             JLabel stock = new JLabel(String.valueOf(stockToAdd[i]));
             this.stockToAddLabel.add(stock);
         }
+        this.buttonArray = new JButton[5][];
         this.storeManager = storeManager;
         this.cartId = cartID;
         // Adds ShoppingCart to hashmap in StoreManager to keep track
@@ -216,13 +219,22 @@ public class StoreView {
         addB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 stockToAdd[productId-1] += 1;
-
+                if(stockToAdd[productId-1] == 50){
+                    addB.setEnabled(false);
+                }
+                else{
+                    enableAdd(addB, productId);
+                }
                 stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
             }
         });
         return addB;
+    }
+    private void enableAdd(JButton addB, int productId){
+        if (this.stockToAdd[productId-1] != 50){
+            addB.setEnabled(true);
+        }
     }
 
     private JButton getViewCartB() {
@@ -278,9 +290,11 @@ public class StoreView {
 
             // Add the add and remove buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
+            JButton[] buttonPair = {getAddB(i+1),getRemoveB(i+1) };
+            this.buttonArray[i] = buttonPair;
             this.productPanels.get(i).add(buttonPanel);
-            buttonPanel.add(getAddB(i+1));
-            buttonPanel.add(getRemoveB(i+1));
+            buttonPanel.add(this.buttonArray[i][0]);
+            buttonPanel.add(this.buttonArray[i][1]);
 
             bodyPanel.add(this.productPanels.get(i));
             this.productPanels.get(i).add(stockToAddLabel.get(i));
