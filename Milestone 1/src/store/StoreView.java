@@ -3,10 +3,13 @@ package store;
 import store.StoreManager;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -36,6 +39,7 @@ public class StoreView {
     private List<JLabel> stockToAddLabel;
     private StoreManager storeManager;
     private JButton[][] buttonArray;
+    private JLabel[] productLabels;
     private int cartId;
 
     /**
@@ -55,6 +59,7 @@ public class StoreView {
             this.stockToAddLabel.add(stock);
         }
         this.buttonArray = new JButton[5][];
+        this.productLabels = new JLabel[5];
         this.storeManager = storeManager;
         this.cartId = cartID;
         // Adds ShoppingCart to hashmap in StoreManager to keep track
@@ -159,6 +164,7 @@ public class StoreView {
         System.out.println("");
     }
 
+
     /**
      * This method gets the total for the transaction
      *
@@ -200,13 +206,19 @@ public class StoreView {
 
     private JButton getRemoveB(int productId) {
         JButton removeB = new JButton("-");
+        removeB.setEnabled(false);
         //removeB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         removeB.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
 
             stockToAdd[productId-1] -= 1;
-
+            if(stockToAdd[productId-1] != storeManager.getStoreInventory().getStock(productId) && !buttonArray[productId-1][0].isEnabled()){
+                buttonArray[productId-1][0].setEnabled(true);
+            }
+            if (stockToAdd[productId-1] == 0 ){
+                buttonArray[productId-1][1].setEnabled(false);
+            }
             stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
         }
     });
@@ -215,31 +227,91 @@ public class StoreView {
 
     private JButton getAddB(int productId) {
         JButton addB = new JButton("+");
+
         //addB.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         addB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 stockToAdd[productId-1] += 1;
-                if(stockToAdd[productId-1] == 50){
+                if(stockToAdd[productId-1] == storeManager.getStoreInventory().getStock(productId)){
                     addB.setEnabled(false);
                 }
-                else{
-                    enableAdd(addB, productId);
+                if(stockToAdd[productId-1] > 0){
+                    buttonArray[productId-1][1].setEnabled(true);
                 }
                 stockToAddLabel.get(productId-1).setText(String.valueOf(stockToAdd[productId-1]));
             }
         });
         return addB;
     }
-    private void enableAdd(JButton addB, int productId){
-        if (this.stockToAdd[productId-1] != 50){
-            addB.setEnabled(true);
-        }
+
+
+    private JButton getAddToCart(int productId){
+        JButton addToCart = new JButton("Add to Cart");
+        addToCart.setPreferredSize(new Dimension(40, 20));
+        addToCart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addToCart(productId, stockToAdd[productId-1]);
+                productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
+            }
+        });
+
+        return addToCart;
+    }
+    private JButton getRemoveFromCart(int productId, int positionInCart ){
+        JButton removeFromCart = new JButton("Remove From Cart");
+        removeFromCart.setPreferredSize(new Dimension(40, 20));
+        removeFromCart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
+
+                productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
+                removeFromCart.setEnabled(false);
+            }
+        });
+        return removeFromCart;
     }
 
     private JButton getViewCartB() {
+
         JButton viewCartB = new JButton("View Cart");
         viewCartB.setPreferredSize(new Dimension(30, 20));
+        viewCartB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                    JFrame f = new JFrame("Cart View");
+
+
+                f.setSize(400, 400);
+                JPanel p1 = new JPanel(new BorderLayout());
+                BoxLayout layout = new BoxLayout(p1, BoxLayout.Y_AXIS);
+                p1.setLayout(layout);
+                p1.setPreferredSize(new Dimension(400,400));
+                JLabel[] productName = new JLabel[5];
+                JLabel[] numProducts = new JLabel[5];
+                JButton[] removeButtons = new JButton[5];
+                for (int i = 0; i < storeManager.getSMCart(cartId).size(); i++) {
+                    productName[i] = new JLabel(storeManager.getSMCart(cartId).get(i).getName());
+                    numProducts[i] = new JLabel(String.valueOf(storeManager.getSMItemsInCart(cartId).get(i)));
+                    removeButtons[i] = getRemoveFromCart(storeManager.getSMCart(cartId).get(i).getId(),i);
+                    p1.add(productName[i]);
+                    p1.add(numProducts[i]);
+                    p1.add(removeButtons[i]);
+
+                }
+
+
+
+
+                f.add(p1);
+                f.pack();
+
+                f.setVisible(true);
+            }
+        });
         return viewCartB;
     }
 
@@ -252,6 +324,29 @@ public class StoreView {
     private JButton getQuitB() {
         JButton quitB = new JButton("Quit");
         quitB.setPreferredSize(new Dimension(30, 20));
+        quitB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?")
+                        == JOptionPane.OK_OPTION) {
+                    // close it down!
+                    frame.setVisible(false);
+                    frame.dispose();
+                }
+            }
+        });
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                if (JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?")
+                        == JOptionPane.OK_OPTION) {
+                    // close it down!
+                    frame.setVisible(false);
+                    frame.dispose();
+                }
+            }
+        });
         return quitB;
     }
 
@@ -284,9 +379,11 @@ public class StoreView {
             BoxLayout layout = new BoxLayout(this.productPanels.get(i), BoxLayout.Y_AXIS);
             this.productPanels.get(i).setLayout(layout);
 
-            JLabel productStock = new JLabel("Price: " +storeManager.getStoreInventory().getProduct(i+1).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(i+1));;
-            productStock.setAlignmentX(Component.CENTER_ALIGNMENT);
-            this.productPanels.get(i).add(productStock);
+            JLabel productLabel = new JLabel("Price: " +storeManager.getStoreInventory().getProduct(i+1).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(i+1));
+            productLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            this.productLabels[i] = productLabel;
+            this.productPanels.get(i).add(this.productLabels[i]);
+            this.productPanels.get(i).add(getAddToCart(i+1));
 
             // Add the add and remove buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
