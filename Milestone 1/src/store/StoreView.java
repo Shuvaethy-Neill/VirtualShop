@@ -320,8 +320,6 @@ public class StoreView {
                         public void actionPerformed(ActionEvent e) {
                             productInfo[j].setText(null);
                             removeButtons[j].setVisible(false);
-                            f.dispose();
-                            f.setVisible(true);
                         }
                     });
                 }
@@ -362,7 +360,7 @@ public class StoreView {
                     p1.add(productPrice[i]);
                     p1.add(border[i]);
                 }
-                JLabel total = new JLabel("Total: " + getTotal());
+                JLabel total = new JLabel("Total: $" + getTotal());
                 p1.add(total);
 
                 JButton okB = new JButton("OK");
