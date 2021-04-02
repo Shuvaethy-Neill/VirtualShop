@@ -67,8 +67,8 @@ public class StoreView {
         this.buttonArray = new JButton[5][];
         this.productLabels = new JLabel[5];
         this.productImages = new String[]{"https://static.bhphoto.com/images/images150x150/1589222193_1560964.jpg","https://staging.lifeloop.com.au/wp-content/uploads/2020/04/intel-core-lga-1151-cpu-processor-chipset-top-150x150.jpg",
-        "http://www.yeargoo.com/wp-content/uploads/2020/07/Note-Book-Computer-SODIMM-RAM-producer-1-150x150.jpg", "https://www.ilounge.com/wp-content/uploads/2020/02/Get-More-Storage-Space-with-the-110-Seagate-BarraCuda-6TB-Hard-Drive-150x150.png",
-        "https://www.pc-canada.com/dd2/img/item/B-150x150/1/14621.jpg"};
+                "http://www.yeargoo.com/wp-content/uploads/2020/07/Note-Book-Computer-SODIMM-RAM-producer-1-150x150.jpg", "https://www.ilounge.com/wp-content/uploads/2020/02/Get-More-Storage-Space-with-the-110-Seagate-BarraCuda-6TB-Hard-Drive-150x150.png",
+                "https://www.pc-canada.com/dd2/img/item/B-150x150/1/14621.jpg"};
         this.storeManager = storeManager;
         this.cartId = cartID;
         // Adds ShoppingCart to hashmap in StoreManager to keep track
@@ -313,6 +313,17 @@ public class StoreView {
                     removeButtons[i] = getRemoveFromCart(storeManager.getSMCart(cartId).get(i).getId(),i);
                     p1.add(productInfo[i]);
                     p1.add(removeButtons[i]);
+
+                    int j = i;
+                    removeButtons[i].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            productInfo[j].setText(null);
+                            removeButtons[j].setVisible(false);
+                            f.dispose();
+                            f.setVisible(true);
+                        }
+                    });
                 }
 
                 f.add(p1);
@@ -320,6 +331,7 @@ public class StoreView {
 
                 f.setVisible(true);
             }
+
         });
         return viewCartB;
     }
@@ -423,16 +435,20 @@ public class StoreView {
         // header
         JLabel headerLabel = new JLabel("Welcome to our store! Cart ID: 0");
         JPanel headerPanel = new JPanel();
+        Color myBlue = new Color(223, 243, 255);
+        headerPanel.setBackground(myBlue);
         headerPanel.add(headerLabel);
         headerPanel.setPreferredSize(new Dimension(250, 100));
         mainPanel.add(headerPanel, BorderLayout.PAGE_START);
 
         // body
         JPanel bodyPanel = new JPanel(new GridLayout(2,3));
+        bodyPanel.setBackground(myBlue);
         mainPanel.add(bodyPanel, BorderLayout.CENTER);
 
-        JPanel footerPanel = new JPanel(new GridLayout(1,3));
+        JPanel footerPanel = new JPanel(new GridLayout(1,1));
         footerPanel.setPreferredSize(new Dimension(250,100));
+        footerPanel.setBackground(myBlue);
         mainPanel.add(footerPanel, BorderLayout.PAGE_END);
 
 
@@ -460,17 +476,19 @@ public class StoreView {
             productLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.productLabels[i] = productLabel;
             this.productPanels.get(i).add(this.productLabels[i]);
-            //this.productPanels.get(i).add(getAddToCart(i+1));
+            this.productPanels.get(i).setBackground(Color.WHITE);
+            this.productPanels.get(i).add(label);
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             // Add the add and remove buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
+            buttonPanel.setBackground(Color.lightGray);
             JButton[] threeButtons = {getAddB(i+1),getRemoveB(i+1), getAddToCart(i+1)};
             this.buttonArray[i] = threeButtons;
             this.productPanels.get(i).add(buttonPanel);
             buttonPanel.add(this.buttonArray[i][0]);
             buttonPanel.add(this.buttonArray[i][1]);
             buttonPanel.add(this.buttonArray[i][2]);
-            this.productPanels.get(i).add(label);
             this.productPanels.get(i).add(stockToAddLabel.get(i));
             bodyPanel.add(this.productPanels.get(i));
 
@@ -489,177 +507,9 @@ public class StoreView {
 
     }
 
-
     public static void main(String[] args) {
-        StoreManager storeManager1 = new StoreManager();
-        StoreView storeView1 = new StoreView(storeManager1, storeManager1.generateCartID());
-        storeView1.displayGUI();
-        /*
-        StoreView storeView2 = new StoreView(storeManager1, storeManager1.generateCartID());
-        StoreView storeView3 = new StoreView(storeManager1, storeManager1.generateCartID());
-        ArrayList<StoreView> users = new ArrayList<StoreView>();
-        users.add(storeView1);
-        users.add(storeView2);
-        users.add(storeView3);
-        int activeSV = users.size();
-        int rangeOfProducts = storeManager1.getStoreInventory().getProductList().size();
-        Inventory inv = storeManager1.getStoreInventory();
-        Scanner sc = new Scanner(System.in);
-        while (activeSV > 0) {
-            System.out.print("CHOOSE YOUR STOREVIEW (integer input) >>> ");
-            int choice = -1;
-            while (choice == -1){
-                try {
-                    choice = sc.nextInt();
-                }catch (InputMismatchException ime){
-                    System.out.println("Please input an integer for a store id");
-                    sc.next();
-                }
-            }
-            if (choice < users.size() && choice >= 0){
-                String chooseAnother = "";
-                // Checks if they want to change the storeview
-                while (!chooseAnother.equals("y") && !chooseAnother.equals("Y")){
-                    System.out.println("Enter a command or type \'help\' for a list of commands or \'exit\' to disconnect "+
-                            "or changeview to change storeview");
-                    String command = sc.next();
-                    // Checks if the user entered the browse command
-                    if(command.toLowerCase(Locale.ROOT).equals("browse")){
-                        users.get(choice).browse();
-                    }
-                    // Checks if the user entered the removefromcart command
-                    if(command.toLowerCase(Locale.ROOT).equals("removefromcart")) {
-                        if (!storeManager1.getSMCart(users.get(choice).cartId).isEmpty()) {
-                            System.out.println("Enter the product number");
-                            int productNumber = -1;
-                            while (productNumber == -1){
-                                try {
-                                    productNumber = sc.nextInt();
-                                }catch (InputMismatchException ime){
-                                    System.out.println("Please pick a product id");
-                                    sc.next();
-                                }
-                            }
-                            // Checks if the user has picked from the range of products they has
-                            while (!users.get(choice).checkInCart(productNumber)) {
-                                System.out.println("Please pick a product id for a product you have");
-                                productNumber = -1;
-                                while (productNumber == -1){
-                                    try {
-                                        productNumber = sc.nextInt();
-                                    }catch (InputMismatchException ime){
-                                        System.out.println("Please pick a product id");
-                                        sc.next();
-                                    }
-                                }
-                            }
-                            System.out.println("Enter the product amount to remove");
-                            int amountOfProduct = -1;
-                            while (amountOfProduct == -1){
-                                try {
-                                    amountOfProduct = sc.nextInt();
-                                }catch (InputMismatchException ime){
-                                    System.out.println("Please enter a number");
-                                    sc.next();
-                                }
-                            }
-                            users.get(choice).removeFromCart(productNumber, amountOfProduct);
-                        }
-                        else{
-                            System.out.println("Your cart is empty! There is nothing to remove");
-                        }
-                    }
-                    // Checks if the user entered the addtocart command
-                    if(command.toLowerCase(Locale.ROOT).equals("addtocart")) {
-                        System.out.println("Enter the product number");
-                        int productNumber = -1;
-                        while (productNumber == -1){
-                            try {
-                                productNumber = sc.nextInt();
-                            }catch (InputMismatchException ime){
-                                System.out.println("Please pick a product id");
-                                sc.next();
-                            }
-                        }
-                        // Checks to see if the user has picked the correct product id
-                        while (productNumber > rangeOfProducts || productNumber <=0 || inv.getStock(productNumber) == 0){
-                            System.out.println("Please pick a product id in the range 1-"+ rangeOfProducts + " and that has available stock");
-                            productNumber = -1;
-                            while (productNumber == -1){
-                                try {
-                                    productNumber = sc.nextInt();
-                                }catch (InputMismatchException ime){
-                                    System.out.println("Please pick a product id");
-                                    sc.next();
-                                }
-                            }
-                        }
-                        System.out.println("Enter the product amount to add");
-                        int amountOfProduct = -1;
-                        while (amountOfProduct == -1){
-                            try {
-                                amountOfProduct = sc.nextInt();
-                            }catch (InputMismatchException ime){
-                                System.out.println("Please enter a number");
-                                sc.next();
-                            }
-                        }
-                        //Checks if the user has picked from the range of products the store has
-                        while (amountOfProduct > inv.getStock(productNumber) || amountOfProduct <= 0){
-                            System.out.println("Please pick an amount of stock in range 1-"+ inv.getStock(productNumber));
-                            amountOfProduct = -1;
-                            while (amountOfProduct == -1){
-                                try {
-                                    amountOfProduct = sc.nextInt();
-                                }catch (InputMismatchException ime){
-                                    System.out.println("Please enter a number");
-                                    sc.next();
-                                }
-                            }
-                        }
-                        users.get(choice).addToCart(productNumber,amountOfProduct);
-                    }
-                    // Checks if the user entered the viewcart command
-                    if(command.toLowerCase(Locale.ROOT).equals("viewcart")){
-                        users.get(choice).viewCart();
-                    }
-                    // Checks if the user entered the help command
-                    if(command.toLowerCase(Locale.ROOT).equals("help")){
-                        users.get(choice).help();
-                    }
-                    // Checks if the user entered the checkout command
-                    if(command.toLowerCase(Locale.ROOT).equals("checkout")){
-                        System.out.println("Do you want to checkout y/n");
-                        String answer = sc.next();
-                        if (answer.equals("y")){
-                            double total = users.get(choice).getTotal();
-                            System.out.println("Please pay now");
-                            double payment = sc.nextDouble();
-                            users.get(choice).transaction(total,payment);
-                            users.remove(choice);
-                            activeSV--;
-                            break;
-                        }
-                    }
-                    // Checks if the user entered the exit command
-                    if(command.toLowerCase(Locale.ROOT).equals("exit")){
-                        users.get(choice).removeEverythingFromCart();
-                        users.remove(choice);
-                        activeSV--;
-                        break;
-                    }
-                    // Checks if the user entered the changeview command
-                    if(command.toLowerCase(Locale.ROOT).equals("changeview")){
-                        chooseAnother = "y";
-                    }
-                }
-            }else{
-                System.out.println(String.format("MAIN > ERROR > BAD CHOICE\nPLEASE CHOOSE IN RANGE [%d, %d]",
-                        0, users.size() - 1));
-            }
-        }
-        System.out.println("ALL STOREVIEWS DEACTIVATED");
-    }
-         */
+        StoreManager storeManager = new StoreManager();
+        StoreView storeView = new StoreView(storeManager, storeManager.generateCartID());
+        storeView.displayGUI();
     }
 }
