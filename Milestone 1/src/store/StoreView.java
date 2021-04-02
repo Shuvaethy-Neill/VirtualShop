@@ -14,6 +14,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -42,7 +44,7 @@ public class StoreView {
     private StoreManager storeManager;
     private JButton[][] buttonArray;
     private JLabel[] productLabels;
-    private JLabel[] productImageLabels;
+    private String[] productImages;
     private int cartId;
 
     /**
@@ -64,7 +66,9 @@ public class StoreView {
         }
         this.buttonArray = new JButton[5][];
         this.productLabels = new JLabel[5];
-        this.productImageLabels = new JLabel[5];
+        this.productImages = new String[]{"https://static.bhphoto.com/images/images150x150/1589222193_1560964.jpg","https://staging.lifeloop.com.au/wp-content/uploads/2020/04/intel-core-lga-1151-cpu-processor-chipset-top-150x150.jpg",
+        "http://www.yeargoo.com/wp-content/uploads/2020/07/Note-Book-Computer-SODIMM-RAM-producer-1-150x150.jpg", "https://www.ilounge.com/wp-content/uploads/2020/02/Get-More-Storage-Space-with-the-110-Seagate-BarraCuda-6TB-Hard-Drive-150x150.png",
+        "https://www.pc-canada.com/dd2/img/item/B-150x150/1/14621.jpg"};
         this.storeManager = storeManager;
         this.cartId = cartID;
         // Adds ShoppingCart to hashmap in StoreManager to keep track
@@ -256,7 +260,7 @@ public class StoreView {
     private JButton getAddToCart(int productId){
         JButton addToCart = new JButton("Add to Cart");
         addToCart.setEnabled(false);
-        addToCart.setPreferredSize(new Dimension(40, 20));
+
         addToCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,7 +277,7 @@ public class StoreView {
     }
     private JButton getRemoveFromCart(int productId, int positionInCart ){
         JButton removeFromCart = new JButton("Remove From Cart");
-        removeFromCart.setPreferredSize(new Dimension(40, 20));
+        removeFromCart.setPreferredSize(new Dimension(50, 20));
         removeFromCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -413,27 +417,42 @@ public class StoreView {
      */
     private void displayGUI() {
         this.frame.setTitle("Client StoreView");
-
+        this.frame.setMinimumSize(new Dimension(900, 900));
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // header
-        JLabel headerLabel = new JLabel("Welcome to our store! Cart ID:");
+        JLabel headerLabel = new JLabel("Welcome to our store! Cart ID: 0");
         JPanel headerPanel = new JPanel();
         headerPanel.add(headerLabel);
         headerPanel.setPreferredSize(new Dimension(250, 100));
         mainPanel.add(headerPanel, BorderLayout.PAGE_START);
 
         // body
-        JPanel bodyPanel = new JPanel(new GridLayout());
+        JPanel bodyPanel = new JPanel(new GridLayout(2,3));
         mainPanel.add(bodyPanel, BorderLayout.CENTER);
+
+        JPanel footerPanel = new JPanel(new GridLayout(1,3));
+        footerPanel.setPreferredSize(new Dimension(250,100));
+        mainPanel.add(footerPanel, BorderLayout.PAGE_END);
+
 
 
         // Add the product panels
         for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
-            this.productPanels.add(i, new JPanel(new BorderLayout()));
+            Image image = null;
+            try {
+                URL url = new URL(this.productImages[i]);
+                image = ImageIO.read(url);
+
+
+            } catch (Exception exp) {
+                exp.printStackTrace();
+            }
+            JLabel label = new JLabel(new ImageIcon(image));
+            this.productPanels.add(i, new JPanel(new GridLayout(3,1)));
             // Create layout and border with product name
             this.productPanels.get(i).setBorder(BorderFactory.createTitledBorder(storeManager.getStoreInventory().getProductName(i+1)));
-            this.productPanels.get(i).setPreferredSize(new Dimension(200, 300));
+            this.productPanels.get(i).setPreferredSize(new Dimension(200, 200));
             BoxLayout layout = new BoxLayout(this.productPanels.get(i), BoxLayout.Y_AXIS);
             this.productPanels.get(i).setLayout(layout);
 
@@ -451,15 +470,16 @@ public class StoreView {
             buttonPanel.add(this.buttonArray[i][0]);
             buttonPanel.add(this.buttonArray[i][1]);
             buttonPanel.add(this.buttonArray[i][2]);
-
-            bodyPanel.add(this.productPanels.get(i));
+            this.productPanels.get(i).add(label);
             this.productPanels.get(i).add(stockToAddLabel.get(i));
+            bodyPanel.add(this.productPanels.get(i));
+
         }
 
         // Add the control buttons
-        bodyPanel.add(getViewCartB());
-        bodyPanel.add(getCheckoutB());
-        bodyPanel.add(getQuitB());
+        footerPanel.add(getViewCartB());
+        footerPanel.add(getCheckoutB());
+        footerPanel.add(getQuitB());
 
         // pack
         frame.add(mainPanel);
