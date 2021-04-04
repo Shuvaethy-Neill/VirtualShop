@@ -162,17 +162,6 @@ public class StoreManager {
     public double orderTransaction(ArrayList<Product> items, ArrayList<Integer> quantities){
         double total = 0;
 
-        // Prints summary of items in cart
-        System.out.print("You have the following in your cart: ");
-        for(int i = 0; i < items.size() && i < quantities.size(); i ++) {
-            if(i != items.size() - 1){
-                System.out.print(items.get(i).getName() + " (quantity: " + quantities.get(i) + "), ");
-            }
-            else{
-                System.out.println(items.get(i).getName() + " (quantity: " + quantities.get(i) + ") ");
-            }
-        }
-
         // Totals the transaction cost
         for(int i = 0; i < items.size(); i ++){
             total += (quantities.get(i) * managerInventory.getPrice(items.get(i).getId()));
