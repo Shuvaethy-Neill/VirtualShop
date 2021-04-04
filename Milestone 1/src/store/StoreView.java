@@ -4,23 +4,18 @@ import store.StoreManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
+
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+
 
 // Written by: Andre Hazim 101141843 and Shuvaethy Neill 101143478
 
@@ -137,8 +132,11 @@ public class StoreView {
     private double getTotal() {
         return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
     }
-    
 
+    /**
+     * enables the remove button
+     * @param productId int: the id of the product that is linked to the button
+     */
     private void enableRemove(int productId){
         if(stockToAdd[productId] > 0){
             buttonArray[productId][1].setEnabled(true);
@@ -147,7 +145,10 @@ public class StoreView {
             buttonArray[productId][1].setEnabled(false);
         }
     }
-
+    /**
+     * enables the add button
+     * @param productId int: the id of the product that is linked to the button
+     */
     private void enableAdd(int productId){
         if(stockToAdd[productId] > 0){
             buttonArray[productId][2].setEnabled(true);
@@ -157,6 +158,11 @@ public class StoreView {
         }
     }
 
+    /**
+     * creates a remove button
+     * @param productId int: the id of the product that is linked to the button
+     * @return JButton: returns the remove button
+     */
     private JButton getRemoveB(int productId) {
         JButton removeB = new JButton("-");
         removeB.setEnabled(false);
@@ -178,7 +184,11 @@ public class StoreView {
         });
         return removeB;
     }
-
+    /**
+     * creates a add button
+     * @param productId int: the id of the product that is linked to the button
+     * @return JButton: returns the add button
+     */
     private JButton getAddB(int productId) {
         JButton addB = new JButton("+");
 
@@ -200,7 +210,11 @@ public class StoreView {
         return addB;
     }
 
-
+    /**
+     * creates an add to cart button
+     * @param productId int: the id of the product that is linked to the button
+     * @return JButton: returns the add to cart button
+     */
     private JButton getAddToCart(int productId){
         JButton addToCart = new JButton("Add to Cart");
         addToCart.setEnabled(false);
@@ -219,6 +233,11 @@ public class StoreView {
 
         return addToCart;
     }
+    /**
+     * creates a remove from cart button
+     * @param productId int: the id of the product that is linked to the button
+     * @return JButton: returns the remove from cart button
+     */
     private JButton getRemoveFromCart(int productId, int positionInCart ){
         JButton removeFromCart = new JButton("Remove From Cart");
         removeFromCart.setPreferredSize(new Dimension(50, 20));
@@ -237,7 +256,10 @@ public class StoreView {
         });
         return removeFromCart;
     }
-
+    /**
+     * creates a view cart button
+     * @return JButton: returns the view cart button
+     */
     private JButton getViewCartB() {
 
         JButton viewCartB = new JButton("View Cart");
@@ -282,7 +304,10 @@ public class StoreView {
         });
         return viewCartB;
     }
-
+    /**
+     * creates a checkout button
+     * @return JButton: returns the checkout button
+     */
     private JButton getCheckoutB() {
         JButton checkoutB = new JButton("Checkout");
         checkoutB.setPreferredSize(new Dimension(30, 20));
@@ -342,6 +367,10 @@ public class StoreView {
         return checkoutB;
     }
 
+    /**
+     * creates a quit button
+     * @return JButton: returns a quit button
+     */
     private JButton getQuitB() {
         JButton quitB = new JButton("Quit");
         quitB.setPreferredSize(new Dimension(30, 20));
