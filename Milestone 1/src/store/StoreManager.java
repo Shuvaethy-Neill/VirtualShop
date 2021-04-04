@@ -180,7 +180,6 @@ public class StoreManager {
 
         DecimalFormat df = new DecimalFormat("#.##");
         total = Double.valueOf(df.format(total));
-        System.out.println("Your total is: " + total);
 
         return total;
     }
