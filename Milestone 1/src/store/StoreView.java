@@ -13,7 +13,6 @@ import java.awt.event.WindowEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -21,25 +20,25 @@ import java.util.List;
 
 /**
  * This StoreView class is the entry point of the store system
- * For this milestone, the user interface is textually displayed in the console
+ * For this milestone, it is displayed to the user with a graphical user interface
  *
- * @author Andre Hazim
+ * @author Andre Hazim and Shuvaethy Neill
  *
- * @version 1.0
+ * @version 2.0
  *
- * @since 2021-03-07
+ * @since 2021-04-04
  *
  */
 
 public class StoreView {
-    private final JFrame frame;
-    private List<JPanel> productPanels;
-    private int[] stockToAdd;
-    private List<JLabel> stockToAddLabel;
+    private final JFrame frame;             // Display the store
+    private List<JPanel> productPanels;     // List of panels to display the products
+    private int[] stockToAdd;               // Represent the quantities of each product to be added to cart
+    private List<JLabel> stockToAddLabel;   // The labels to display the quantities of each product to be added to cart
     private StoreManager storeManager;
-    private JButton[][] buttonArray;
-    private JLabel[] productLabels;
-    private String[] productImages;
+    private JButton[][] buttonArray;        // Array to hold the add, remove and add to cart buttons
+    private JLabel[] productLabels;         // Array to hold the labels for each product
+    private String[] productImages;         // Array to hold the url of each product image
     private int cartId;
 
     /**
@@ -53,6 +52,8 @@ public class StoreView {
         this.productPanels = new ArrayList<JPanel>();
         this.stockToAdd = new int[] {0,0,0,0,0};
         this.stockToAddLabel = new ArrayList<JLabel>();
+
+        //Create the stock to add labels
         for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
 
             JLabel stock = new JLabel("Quantity: " + stockToAdd[i]);
@@ -66,11 +67,10 @@ public class StoreView {
                 "https://www.pc-canada.com/dd2/img/item/B-150x150/1/14621.jpg"};
         this.storeManager = storeManager;
         this.cartId = cartID;
+
         // Adds ShoppingCart to hashmap in StoreManager to keep track
         storeManager.addShoppingCart(new ShoppingCart(cartID));
     }
-
-
 
     /**
      * This method adds a product to cart by StoreManager
@@ -101,12 +101,6 @@ public class StoreView {
         this.viewCart();
     }
 
-
-
-
-
-
-
     /**
      * This method shows the user's current cart
      */
@@ -123,10 +117,8 @@ public class StoreView {
         System.out.println("");
     }
 
-
     /**
      * This method gets the total for the transaction
-     *
      * @return double, the total price
      */
     private double getTotal() {
@@ -134,7 +126,7 @@ public class StoreView {
     }
 
     /**
-     * enables the remove button
+     * This method enables and disables the remove button depending on the quantity of a product being added to cart
      * @param productId int: the id of the product that is linked to the button
      */
     private void enableRemove(int productId){
@@ -145,8 +137,9 @@ public class StoreView {
             buttonArray[productId][1].setEnabled(false);
         }
     }
+
     /**
-     * enables the add button
+     * This method enables and disables the add button depending on the quantity of a product being added to cart
      * @param productId int: the id of the product that is linked to the button
      */
     private void enableAdd(int productId){
@@ -159,9 +152,9 @@ public class StoreView {
     }
 
     /**
-     * creates a remove button
+     * Creates a remove button to decrease the quantity of a product that will be added to the cart
      * @param productId int: the id of the product that is linked to the button
-     * @return JButton: returns the remove button
+     * @return JButton: returns the created remove button
      */
     private JButton getRemoveB(int productId) {
         JButton removeB = new JButton("-");
@@ -184,10 +177,11 @@ public class StoreView {
         });
         return removeB;
     }
+
     /**
-     * creates a add button
+     * Creates an add button to increase the quantity of a product to be added to the cart
      * @param productId int: the id of the product that is linked to the button
-     * @return JButton: returns the add button
+     * @return JButton: returns the created add button
      */
     private JButton getAddB(int productId) {
         JButton addB = new JButton("+");
@@ -211,9 +205,9 @@ public class StoreView {
     }
 
     /**
-     * creates an add to cart button
+     * Creates an add to cart button for the user to add a product to their cart
      * @param productId int: the id of the product that is linked to the button
-     * @return JButton: returns the add to cart button
+     * @return JButton: returns the created add to cart button
      */
     private JButton getAddToCart(int productId){
         JButton addToCart = new JButton("Add to Cart");
@@ -233,10 +227,11 @@ public class StoreView {
 
         return addToCart;
     }
+
     /**
-     * creates a remove from cart button
+     * Creates a remove from cart button for the user to remove an item completely from the cart
      * @param productId int: the id of the product that is linked to the button
-     * @return JButton: returns the remove from cart button
+     * @return JButton: returns the created remove from cart button
      */
     private JButton getRemoveFromCart(int productId ){
         JButton removeFromCart = new JButton("Remove From Cart");
@@ -254,17 +249,16 @@ public class StoreView {
                 }
                 removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
 
-
-
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
                 removeFromCart.setEnabled(false);
             }
         });
         return removeFromCart;
     }
+
     /**
-     * creates a view cart button
-     * @return JButton: returns the view cart button
+     * Creates a view cart button for the user to view their cart
+     * @return JButton: returns the created view cart button
      */
     private JButton getViewCartB() {
 
@@ -310,9 +304,10 @@ public class StoreView {
         });
         return viewCartB;
     }
+
     /**
-     * creates a checkout button
-     * @return JButton: returns the checkout button
+     * Creates a checkout button for the user to checkoout from the store
+     * @return JButton: returns the created checkout button
      */
     private JButton getCheckoutB() {
         JButton checkoutB = new JButton("Checkout");
@@ -347,10 +342,13 @@ public class StoreView {
                 okB.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        f.setVisible(false);
-                        f.dispose();
-                        frame.setVisible(false);
-                        frame.dispose();
+                        if (JOptionPane.showConfirmDialog(frame, "Pressing OK will close the whole program. Are you sure you want to quit?")
+                                == JOptionPane.OK_OPTION) {
+                            f.setVisible(false);
+                            f.dispose();
+                            frame.setVisible(false);
+                            frame.dispose();
+                        }
                     }
                 });
                 f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -374,8 +372,8 @@ public class StoreView {
     }
 
     /**
-     * creates a quit button
-     * @return JButton: returns a quit button
+     * Creates a quit button for the user to exit the store
+     * @return JButton: returns the quit created button
      */
     private JButton getQuitB() {
         JButton quitB = new JButton("Quit");
@@ -414,7 +412,7 @@ public class StoreView {
         this.frame.setMinimumSize(new Dimension(900, 900));
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        // header
+        // Header panel specifications
         JLabel headerLabel = new JLabel("Welcome to our store! Cart ID: 0");
         JPanel headerPanel = new JPanel();
         Color myBlue = new Color(223, 243, 255);
@@ -423,20 +421,20 @@ public class StoreView {
         headerPanel.setPreferredSize(new Dimension(250, 100));
         mainPanel.add(headerPanel, BorderLayout.PAGE_START);
 
-        // body
+        // Body panel specifications
         JPanel bodyPanel = new JPanel(new GridLayout(2,3));
         bodyPanel.setBackground(myBlue);
         mainPanel.add(bodyPanel, BorderLayout.CENTER);
 
+        // Footer panel specification
         JPanel footerPanel = new JPanel(new GridLayout(1,1));
         footerPanel.setPreferredSize(new Dimension(250,100));
         footerPanel.setBackground(myBlue);
         mainPanel.add(footerPanel, BorderLayout.PAGE_END);
 
-
-
-        // Add the product panels
+        // Product panel specifications
         for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
+            // Create the product image
             Image image = null;
             try {
                 URL url = new URL(this.productImages[i]);
@@ -446,6 +444,8 @@ public class StoreView {
             } catch (Exception exp) {
                 exp.printStackTrace();
             }
+
+            // Create a label of the product image and add it to the product panel
             JLabel label = new JLabel(new ImageIcon(image));
             this.productPanels.add(i, new JPanel(new GridLayout(3,1)));
             // Create layout and border with product name
@@ -462,9 +462,9 @@ public class StoreView {
             this.productPanels.get(i).add(label);
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            // Add the add and remove buttons to the product panel
+            // Add the add, remove and add too cart buttons to the product panel
             JPanel buttonPanel = new JPanel(new FlowLayout());
-            buttonPanel.setBackground(Color.lightGray);
+            buttonPanel.setBackground(Color.WHITE);
             JButton[] threeButtons = {getAddB(i+1),getRemoveB(i+1), getAddToCart(i+1)};
             this.buttonArray[i] = threeButtons;
             this.productPanels.get(i).add(buttonPanel);
@@ -472,6 +472,8 @@ public class StoreView {
             buttonPanel.add(this.buttonArray[i][1]);
             buttonPanel.add(this.buttonArray[i][2]);
             this.productPanels.get(i).add(stockToAddLabel.get(i));
+
+            // Add product panel to the body panel
             bodyPanel.add(this.productPanels.get(i));
 
         }
@@ -486,7 +488,6 @@ public class StoreView {
         frame.pack();
 
         this.frame.setVisible(true);
-
     }
 
     public static void main(String[] args) {
