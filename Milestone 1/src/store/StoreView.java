@@ -238,17 +238,23 @@ public class StoreView {
      * @param productId int: the id of the product that is linked to the button
      * @return JButton: returns the remove from cart button
      */
-    private JButton getRemoveFromCart(int productId, int positionInCart ){
+    private JButton getRemoveFromCart(int productId ){
         JButton removeFromCart = new JButton("Remove From Cart");
         removeFromCart.setPreferredSize(new Dimension(50, 20));
+
         removeFromCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
-                }catch (IndexOutOfBoundsException exception){
-                    removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart-1)));
+                int positionInCart = -1;
+                for (int i = 0; i < storeManager.getSMItemsInCart(cartId).size(); i++) {
+                    if (productId == storeManager.getSMCart(cartId).get(i).getId()) {
+                        positionInCart = i;
+                    }
+
                 }
+                removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
+
+
 
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
                 removeFromCart.setEnabled(false);
@@ -281,7 +287,7 @@ public class StoreView {
                 JButton[] removeButtons = new JButton[5];
                 for (int i = 0; i < storeManager.getSMCart(cartId).size(); i++) {
                     productInfo[i] = new JLabel(storeManager.getSMCart(cartId).get(i).getName() + ": " + storeManager.getSMItemsInCart(cartId).get(i));
-                    removeButtons[i] = getRemoveFromCart(storeManager.getSMCart(cartId).get(i).getId(),i);
+                    removeButtons[i] = getRemoveFromCart(storeManager.getSMCart(cartId).get(i).getId());
                     p1.add(productInfo[i]);
                     p1.add(removeButtons[i]);
 
