@@ -281,7 +281,12 @@ public class StoreView {
         removeFromCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
+                try {
+                    removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
+                }catch (IndexOutOfBoundsException exception){
+                    removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart-1)));
+                }
+
                 productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
                 removeFromCart.setEnabled(false);
             }
@@ -342,7 +347,7 @@ public class StoreView {
             public void actionPerformed(ActionEvent e) {
 
                 JFrame f = new JFrame("Checkout");
-
+                f.setMinimumSize(new Dimension(100,100));
 
                 f.setSize(400, 400);
                 JPanel p1 = new JPanel(new BorderLayout());
