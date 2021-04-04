@@ -75,22 +75,7 @@ public class StoreView {
         storeManager.addShoppingCart(new ShoppingCart(cartID));
     }
 
-    /**
-     * This method checks if the product is in the shopping cart
-     *
-     * @param productID int, the id of the product
-     * @return a boolean, true if the item is in the cart or false otherwise
-     */
-    private boolean checkInCart(int productID) {
-        boolean inCart = false;
-        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
-            if (productID == storeManager.getSMCart(this.cartId).get(i).getId()) {
-                inCart = true;
-            }
 
-        }
-        return inCart;
-    }
 
     /**
      * This method adds a product to cart by StoreManager
@@ -121,41 +106,11 @@ public class StoreView {
         this.viewCart();
     }
 
-    /**
-     * This method removes everything from the cart when a user exits
-     */
-    private void removeEverythingFromCart() {
-        for (int i = storeManager.getSMCart(this.cartId).size() - 1; i >= 0; i--) {
 
-            storeManager.removeFromCart(storeManager.getSMCart(this.cartId).get(i).getId(),
-                    storeManager.getSMItemsInCart(this.cartId).get(i), this.cartId);
-        }
-    }
 
-    /**
-     * This method displays all the commands the user can enter
-     */
-    private void help() {
-        System.out.println("browse - shows products in stock");
-        System.out.println("addtocart - adds products to cart based off of id");
-        System.out.println("removefromcart - removes products from cart");
-        System.out.println("viewcart - shows products in cart");
-        System.out.println("checkout - to checkout your items");
-    }
 
-    /**
-     * This method displays the stores current inventory
-     */
-    private void browse() {
-        Inventory inv = storeManager.getStoreInventory();
-        System.out.println("The Computer Store");
-        System.out.println("-BROWSE-");
-        System.out.println("ID | Product | Price | Stock");
-        for (int i = 1; i < inv.getProductList().size() + 1; i++) {
-            System.out.println(i + " | " + inv.getProduct(i).getName() + " | $" + inv.getPrice(i) + " | " +
-                    inv.getStock(i));
-        }
-    }
+
+
 
     /**
      * This method shows the user's current cart
@@ -182,18 +137,7 @@ public class StoreView {
     private double getTotal() {
         return storeManager.orderTransaction(storeManager.getSMCart(this.cartId), storeManager.getSMItemsInCart(this.cartId));
     }
-
-    /**
-     * this method will do the transaction
-     *
-     * @param total       double the total amount the user must pay
-     * @param amountToPay double the amount the user pays it is assumed that they payed in full
-     */
-    private void transaction(double total, double amountToPay) {
-        if (amountToPay >= total) {
-            System.out.println("Thank you for shopping at the computer store");
-        }
-    }
+    
 
     private void enableRemove(int productId){
         if(stockToAdd[productId] > 0){
