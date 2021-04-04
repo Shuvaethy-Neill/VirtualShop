@@ -79,11 +79,7 @@ public class StoreView {
      * @param amountToAdd int, the amount of the product to add
      */
     private void addToCart(int productID, int amountToAdd) {
-        System.out.println("-ADD-");
-        System.out.println("Adding " + amountToAdd + " " + storeManager.getStoreInventory().getProductName(productID) + "(s)");
         storeManager.addToCart(productID, amountToAdd, this.cartId);
-
-        this.viewCart();
     }
 
     /**
@@ -93,28 +89,7 @@ public class StoreView {
      * @param amountToRemove int, the amount of the product to remove
      */
     private void removeFromCart(int productID, int amountToRemove) {
-
-        System.out.println("-REMOVE-");
-        System.out.println("Removing " + amountToRemove + " " + storeManager.getStoreInventory().getProductName(productID));
         storeManager.removeFromCart(productID, amountToRemove, this.cartId);
-
-        this.viewCart();
-    }
-
-    /**
-     * This method shows the user's current cart
-     */
-    private void viewCart() {
-        System.out.print("Your Cart : ");
-        for (int i = 0; i < storeManager.getSMCart(this.cartId).size(); i++) {
-            System.out.print("(" + storeManager.getSMCart(this.cartId).get(i).getName() + ", " + storeManager.getSMItemsInCart(this.cartId).get(i) + ")"); //
-            if (i == storeManager.getSMCart(this.cartId).size() - 1) {
-                System.out.print("");
-            } else {
-                System.out.print(", ");
-            }
-        }
-        System.out.println("");
     }
 
     /**
@@ -139,7 +114,7 @@ public class StoreView {
     }
 
     /**
-     * This method enables and disables the add button depending on the quantity of a product being added to cart
+     * This method enables and disables the addToCart button depending on the quantity of a product being added to cart
      * @param productId int: the id of the product that is linked to the button
      */
     private void enableAdd(int productId){
