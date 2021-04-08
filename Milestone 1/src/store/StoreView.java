@@ -54,7 +54,7 @@ public class StoreView {
         this.stockToAddLabel = new ArrayList<JLabel>();
 
         //Create the stock to add labels
-        for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
+        for(int i = 0; i < storeManager.getAvailableProducts().size(); i++){
 
             JLabel stock = new JLabel("Quantity: " + stockToAdd[i]);
             stock.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -140,7 +140,7 @@ public class StoreView {
             public void actionPerformed(ActionEvent e) {
 
                 stockToAdd[productId-1] -= 1;
-                if(stockToAdd[productId-1] != storeManager.getStoreInventory().getStock(productId) && !buttonArray[productId-1][0].isEnabled()){
+                if(stockToAdd[productId-1] != storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(productId-1)) && !buttonArray[productId-1][0].isEnabled()){
                     buttonArray[productId-1][0].setEnabled(true);
                 }
                 if (stockToAdd[productId-1] == 0 ){
@@ -166,7 +166,7 @@ public class StoreView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 stockToAdd[productId-1] += 1;
-                if(stockToAdd[productId-1] == storeManager.getStoreInventory().getStock(productId)){
+                if(stockToAdd[productId-1] == storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(productId-1))){
                     addB.setEnabled(false);
                 }
                 if(stockToAdd[productId-1] > 0){
@@ -192,7 +192,8 @@ public class StoreView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addToCart(productId, stockToAdd[productId-1]);
-                productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
+                productLabels[productId-1].setText(("Price: " +storeManager.getAvailableProducts().get(productId-1).getPrice() + " | Stock: " +
+                        storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(productId-1))));
                 stockToAdd[productId - 1] = 0;
                 stockToAddLabel.get(productId - 1).setText("Quantity: " + stockToAdd[productId-1]);
                 enableRemove(productId - 1);
@@ -224,7 +225,8 @@ public class StoreView {
                 }
                 removeFromCart(productId,(storeManager.getSMItemsInCart(cartId).get(positionInCart)));
 
-                productLabels[productId-1].setText(("Price: " +storeManager.getStoreInventory().getProduct(productId).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(productId)));
+                productLabels[productId-1].setText(("Price: " +storeManager.getAvailableProducts().get(productId-1).getPrice() + " | Stock: " +
+                        storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(productId-1))));
                 removeFromCart.setEnabled(false);
             }
         });
@@ -408,7 +410,7 @@ public class StoreView {
         mainPanel.add(footerPanel, BorderLayout.PAGE_END);
 
         // Product panel specifications
-        for(int i = 0; i < storeManager.getStoreInventory().getProductList().size(); i++){
+        for(int i = 0; i < storeManager.getAvailableProducts().size(); i++){
             // Create the product image
             Image image = null;
             try {
@@ -424,12 +426,12 @@ public class StoreView {
             JLabel label = new JLabel(new ImageIcon(image));
             this.productPanels.add(i, new JPanel(new GridLayout(3,1)));
             // Create layout and border with product name
-            this.productPanels.get(i).setBorder(BorderFactory.createTitledBorder(storeManager.getStoreInventory().getProductName(i+1)));
+            this.productPanels.get(i).setBorder(BorderFactory.createTitledBorder(storeManager.getAvailableProducts().get(i).getName()));
             this.productPanels.get(i).setPreferredSize(new Dimension(200, 200));
             BoxLayout layout = new BoxLayout(this.productPanels.get(i), BoxLayout.Y_AXIS);
             this.productPanels.get(i).setLayout(layout);
 
-            JLabel productLabel = new JLabel("Price: " +storeManager.getStoreInventory().getProduct(i+1).getPrice() + " | Stock: " +storeManager.getStoreInventory().getStock(i+1));
+            JLabel productLabel = new JLabel("Price: " +storeManager.getAvailableProducts().get(i).getPrice()+ " | Stock: " +storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(i)));
             productLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             this.productLabels[i] = productLabel;
             this.productPanels.get(i).add(this.productLabels[i]);

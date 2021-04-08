@@ -49,8 +49,9 @@ public class StoreManager {
      *
      * @return store.Inventory, the store.Inventory being managed
      */
-    public Inventory getStoreInventory(){
-        return managerInventory;
+
+    public ArrayList<Product> getAvailableProducts(){
+        return managerInventory.getProductList();
     }
 
     /**
@@ -119,7 +120,7 @@ public class StoreManager {
         ShoppingCart shoppingCart = carts.get(cartId);
 
 
-        shoppingCart.addToCart(productID,amountOfProduct,this.getStoreInventory());
+        shoppingCart.addToCart(productID,amountOfProduct,this.managerInventory);
         // Update the carts HashMap with the new additions
         carts.put(cartId, shoppingCart);
         // Decrease stock in store store.Inventory when user adds something to cart

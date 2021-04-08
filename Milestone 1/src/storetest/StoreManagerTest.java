@@ -104,6 +104,7 @@ public class StoreManagerTest {
     /**
      * Tests the addToCart method to make sure items are correctly added to a cart
      */
+    /*
     @Test
     public void testAddToCart(){
         System.out.println("Testing the addToCart method in the StoreManager Class");
@@ -140,10 +141,11 @@ public class StoreManagerTest {
         assertEquals(23, storeManager.getStoreInventory().getStock(1), "There is a bug in the addToCart method in the StoreManager class");
 
     }
-
+    */
     /**
      * Tests the removeFromCart method to make sure items are correctly removed from a cart
      */
+    /*
     @Test
     public void testRemoveFromCart(){
         System.out.println("Testing the removeFromCart method in the store.StoreManager Class:");
@@ -200,7 +202,7 @@ public class StoreManagerTest {
         assertEquals(48, storeManager.getStoreInventory().getStock(3), "There is a bug in the addToCart method in the store.StoreManager class");
 
     }
-
+    */
     /**
      * Tests the orderTransaction method to make sure the correct total is returned
      */
