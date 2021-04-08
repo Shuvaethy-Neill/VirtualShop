@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 
-public class ShoppingCart  {
+public class ShoppingCart implements ProductStockContainer {
     private ArrayList<Product>cart;
     private ArrayList<Integer>itemsInCart;
     private int cartID;
@@ -38,44 +38,41 @@ public class ShoppingCart  {
         this.cartID = cartID;
     }
 
-    /**
-     * adds items to the cart
-     * @param productID the id of the product
-     * @param amountOfProduct the amount of product to be added
-     * @param inventory the inventory that we will take the item out of
-     */
-    public void addToCart(int productID, int amountOfProduct, Inventory inventory){
-        if (cart.isEmpty()){
-            this.cart.add(inventory.getProduct(productID));
-            this.itemsInCart.add(amountOfProduct);
+
+    @Override
+    public void addProductQuantity(Product product, int stock){
+
+        //If the arraylist is empty add the product as a new product and add stock
+        if(cart.isEmpty()){
+
+            cart.add(product);
+            itemsInCart.add(stock);
         }
         else{
             int i = 0;
-            while (cart.get(i).getId() != productID && i<cart.size()-1) {
+            while (cart.get(i).getId() != product.getId() && i<cart.size()-1) {
                 i++;
             }
-            if (cart.get(i).getId() == productID){
+
+            if(cart.get(i).getId() == product.getId()){
                 int tempStock = itemsInCart.get(i);
-                tempStock += amountOfProduct;
+                tempStock += stock;
                 itemsInCart.set(i, tempStock);
             }
             else{
-                this.cart.add(inventory.getProduct(productID));
-                this.itemsInCart.add(amountOfProduct);
+                // If product does not exist then add it
+                cart.add(product);
+                itemsInCart.add(stock);
             }
-
         }
     }
 
     /**
-     * removes items from cart
-     * @param productID the id of the product
-     * @param amountOfProduct the amount of product to be removed
-     * @return returns the amount of removed product
+     *
      */
-    public int removeFromCart(int productID, int amountOfProduct){
+    public int removeProductQuantity(Product product, int amountOfProduct){
         int i = 0;
-        while(cart.get(i).getId() != productID && i < cart.size()-1){
+        while(cart.get(i).getId() != product.getId() && i < cart.size()-1){
             i++;
         }
         int removedProduct = amountOfProduct;
@@ -96,6 +93,7 @@ public class ShoppingCart  {
         return removedProduct;
     }
 
+
     /**
      * The accessor of the cart attribute
      * @return ArrayList<Product> the cart of the shopping cart will be returned
@@ -111,4 +109,13 @@ public class ShoppingCart  {
         return this.itemsInCart;
     }
 
+    @Override
+    public int getProductQuantity(Product product) {
+        return 0;
+    }
+
+    @Override
+    public int getNumOfProducts() {
+        return 0;
+    }
 }

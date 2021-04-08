@@ -44,7 +44,7 @@ public class Inventory implements ProductStockContainer{
      * @param product Product: the product you want to the stock of
      * @return int, the stock available for the product
      */
-
+    @Override
     public int getProductQuantity(Product product) {
         int stock = 0;
         if (products.isEmpty() == false) {
@@ -67,6 +67,7 @@ public class Inventory implements ProductStockContainer{
      * @param product Product, the specific product
      * @param stock int, the specific amount of stock being added
      */
+    @Override
     public void addProductQuantity(Product product, int stock){
 
         //If the arraylist is empty add the product as a new product and add stock
@@ -100,17 +101,16 @@ public class Inventory implements ProductStockContainer{
      * @param stockRemove int, the amount of stock being removed
      * @return boolean value true for successful remove or false if product does not exist
      */
-    public boolean removeProductQuantity(Product product, int stockRemove){
-        boolean isInStock = false;
+    public int removeProductQuantity(Product product, int stockRemove){
+
         int i = 0;
         while(products.get(i).getId() != product.getId() && i<products.size()-1){
             i++;
         }
+        int removedProduct = stockRemove;
         if(products.get(i).getId() == product.getId()){
             // Will return true if the product exists and its stock can be successfully removed
-            if (products.get(i).getId() == product.getId()) {
-                isInStock = true;
-            }
+
             int tempStock = quantity.get(i);
             tempStock -= stockRemove;
             if (tempStock < 0) {
@@ -118,7 +118,7 @@ public class Inventory implements ProductStockContainer{
             }
             quantity.set(i, tempStock);
         }
-        return isInStock;
+        return stockRemove;
     }
 
     /**
