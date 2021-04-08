@@ -61,7 +61,7 @@ public class StoreManager {
      */
     public int checkInventoryStock(Product product){
         if (product != null){
-            return managerInventory.getProductQuantity(product);
+            return managerInventory.getStock(product.getId());
         }
         return -1;
     }
@@ -112,30 +112,37 @@ public class StoreManager {
     /**
      * This method adds items to a user's shopping cart
      *
+     * @param productID int, the ID of the product being added to the cart
+     * @param amountOfProduct int, the quantity of the product being added
+     * @param cartId int, the specific cartID associated with the shopping cart
      */
-    public void addToCart(Product product, int amountOfProduct, int cartId){
+    public void addToCart(int productID, int amountOfProduct, int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
 
 
-        shoppingCart.addProductQuantity(product,amountOfProduct);
+        shoppingCart.addToCart(productID,amountOfProduct,this.getStoreInventory());
         // Update the carts HashMap with the new additions
         carts.put(cartId, shoppingCart);
         // Decrease stock in store store.Inventory when user adds something to cart
-        managerInventory.removeProductQuantity(product, amountOfProduct);
+        managerInventory.removeStock(productID, amountOfProduct);
 
     }
 
     /**
      * This method removes items from a user's cart
+     *
+     * @param productID int, the ID of the product being removed to the cart
+     * @param amountOfProduct int, the quantity of the product being removed
+     * @param cartId int, the specific cartID associated with the shopping cart
      */
-    public void removeFromCart(Product product, int amountOfProduct,int cartId){
+    public void removeFromCart(int productID, int amountOfProduct,int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
-        int removedProduct = shoppingCart.removeProductQuantity(product, amountOfProduct);
+        int removedProduct = shoppingCart.removeFromCart(productID, amountOfProduct);
 
         // Update the carts HashMap after removals
         carts.put(cartId, shoppingCart);
         // Add stock in store store.Inventory when user removes something to cart
-        managerInventory.addProductQuantity(product ,removedProduct);
+        managerInventory.addStock(managerInventory.getProduct(productID) ,removedProduct);
     }
 
     /**
