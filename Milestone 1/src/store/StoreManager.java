@@ -61,7 +61,7 @@ public class StoreManager {
      */
     public int checkInventoryStock(Product product){
         if (product != null){
-            return managerInventory.getStock(product.getId());
+            return managerInventory.getProductQuantity(product);
         }
         return -1;
     }
@@ -120,11 +120,11 @@ public class StoreManager {
         ShoppingCart shoppingCart = carts.get(cartId);
 
 
-        shoppingCart.addToCart(productID,amountOfProduct,this.getStoreInventory());
+        shoppingCart.addProductQuantity(this.managerInventory.getProduct(productID),amountOfProduct);
         // Update the carts HashMap with the new additions
         carts.put(cartId, shoppingCart);
         // Decrease stock in store store.Inventory when user adds something to cart
-        managerInventory.removeStock(productID, amountOfProduct);
+        managerInventory.removeProductQuantity(this.managerInventory.getProduct(productID), amountOfProduct);
 
     }
 
@@ -137,12 +137,12 @@ public class StoreManager {
      */
     public void removeFromCart(int productID, int amountOfProduct,int cartId){
         ShoppingCart shoppingCart = carts.get(cartId);
-        int removedProduct = shoppingCart.removeFromCart(productID, amountOfProduct);
+        int removedProduct = shoppingCart.removeProductQuantity(this.managerInventory.getProduct(productID), amountOfProduct);
 
         // Update the carts HashMap after removals
         carts.put(cartId, shoppingCart);
         // Add stock in store store.Inventory when user removes something to cart
-        managerInventory.addStock(managerInventory.getProduct(productID) ,removedProduct);
+        managerInventory.addProductQuantity(this.managerInventory.getProduct(productID) ,removedProduct);
     }
 
     /**
