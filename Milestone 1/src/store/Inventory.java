@@ -14,7 +14,7 @@ package store;
  */
 
 import java.util.ArrayList;
-public class Inventory {
+public class Inventory implements ProductStockContainer{
     private ArrayList<Integer> quantity; // The quantity of stock available for the products in store
     private ArrayList<Product> products; // The products the store sells
 
@@ -32,30 +32,30 @@ public class Inventory {
         Product powerSupply = new Product("Power Supply", 5, 129.99);
         quantity = new ArrayList<Integer>();
         products = new ArrayList<Product>();
-        addStock(motherBoard, 50);
-        addStock(CPU,50);
-        addStock(RAM, 50);
-        addStock(hardDrive, 50);
-        addStock(powerSupply, 50);
+        addProductQuantity(motherBoard, 50);
+        addProductQuantity(CPU,50);
+        addProductQuantity(RAM, 50);
+        addProductQuantity(hardDrive, 50);
+        addProductQuantity(powerSupply, 50);
     }
 
     /**
      * Gets stock on product given product id
-     * @param productId int, the specific product id
+     * @param product Product: the product you want to the stock of
      * @return int, the stock available for the product
      */
 
-    public int getStock(int productId) {
+    public int getProductQuantity(Product product) {
         int stock = 0;
         if (products.isEmpty() == false) {
             int i = 0;
-            while (products.get(i).getId() != productId && i < products.size()-1) {
+            while (products.get(i).getId() != product.getId() && i < products.size()-1) {
                 i++;
             }
             stock = quantity.get(i);
 
             // If product does not exist return -1
-            if (products.get(i).getId() != productId) {
+            if (products.get(i).getId() != product.getId()) {
                 stock = -1;
             }
         }
@@ -67,7 +67,7 @@ public class Inventory {
      * @param product Product, the specific product
      * @param stock int, the specific amount of stock being added
      */
-    public void addStock(Product product, int stock){
+    public void addProductQuantity(Product product, int stock){
 
         //If the arraylist is empty add the product as a new product and add stock
         if(products.isEmpty()){
@@ -96,19 +96,19 @@ public class Inventory {
 
     /**
      *  Removes specific amount of a product's stock based on product ID
-     * @param productID int, the specific product id
+     * @param
      * @param stockRemove int, the amount of stock being removed
      * @return boolean value true for successful remove or false if product does not exist
      */
-    public boolean removeStock(int productID, int stockRemove){
+    public boolean removeProductQuantity(Product product, int stockRemove){
         boolean isInStock = false;
         int i = 0;
-        while(products.get(i).getId() != productID && i<products.size()-1){
+        while(products.get(i).getId() != product.getId() && i<products.size()-1){
             i++;
         }
-        if(products.get(i).getId() == productID){
+        if(products.get(i).getId() == product.getId()){
             // Will return true if the product exists and its stock can be successfully removed
-            if (products.get(i).getId() == productID) {
+            if (products.get(i).getId() == product.getId()) {
                 isInStock = true;
             }
             int tempStock = quantity.get(i);
@@ -185,5 +185,10 @@ public class Inventory {
      */
     public ArrayList<Product> getProductList(){
         return this.products;
+    }
+
+    @Override
+    public int getNumOfProducts() {
+        return this.products.size();
     }
 }
