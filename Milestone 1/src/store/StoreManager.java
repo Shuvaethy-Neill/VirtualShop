@@ -45,7 +45,7 @@ public class StoreManager {
     }
 
     /**
-     * This method provides access to the inventory that the store.StoreManager is managing
+     * This method provides access to the available inventory products that the StoreManager is managing
      *
      * @return store.Inventory, the store.Inventory being managed
      */
@@ -61,7 +61,7 @@ public class StoreManager {
      */
     public int checkInventoryStock(Product product){
         if (product != null){
-            return managerInventory.getStock(product.getId());
+            return managerInventory.getProductQuantity(product);
         }
         return -1;
     }
@@ -124,7 +124,7 @@ public class StoreManager {
         // Update the carts HashMap with the new additions
         carts.put(cartId, shoppingCart);
         // Decrease stock in store store.Inventory when user adds something to cart
-        managerInventory.removeStock(productID, amountOfProduct);
+        managerInventory.removeProductQuantity(managerInventory.getProduct(productID), amountOfProduct);
 
     }
 
@@ -142,7 +142,7 @@ public class StoreManager {
         // Update the carts HashMap after removals
         carts.put(cartId, shoppingCart);
         // Add stock in store store.Inventory when user removes something to cart
-        managerInventory.addStock(managerInventory.getProduct(productID) ,removedProduct);
+        managerInventory.addProductQuantity(managerInventory.getProduct(productID) ,removedProduct);
     }
 
     /**
@@ -156,7 +156,7 @@ public class StoreManager {
     /**
      * This method takes an order in the form of two parallel arrayLists and completes the store transaction
      *
-     * @param items ArrayList<store.Product>, the products being purchased
+     * @param items ArrayList<Product>, the products being purchased
      * @param quantities ArrayList<Integer>, the quantities of each product being purchased
      * @return double, the total price for order purchase
      */
