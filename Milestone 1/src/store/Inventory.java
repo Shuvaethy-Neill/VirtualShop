@@ -97,7 +97,7 @@ public class Inventory implements ProductStockContainer{
 
     /**
      *  Removes specific amount of a product's stock based on product ID
-     * @param
+     * @param product Product, the specific product
      * @param stockRemove int, the amount of stock being removed
      * @return boolean value true for successful remove or false if product does not exist
      */
@@ -187,6 +187,10 @@ public class Inventory implements ProductStockContainer{
         return this.products;
     }
 
+    /**
+     * Gets the number of products in the inventory
+     * @return int, number of products
+     */
     @Override
     public int getNumOfProducts() {
         return this.products.size();

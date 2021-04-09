@@ -39,6 +39,11 @@ public class ShoppingCart implements ProductStockContainer {
     }
 
 
+    /**
+     * Adds a stock to a product given a name and a stock amount
+     * @param product Product, the specific product
+     * @param stock int, the specific amount of stock being added
+     */
     @Override
     public void addProductQuantity(Product product, int stock){
 
@@ -68,7 +73,10 @@ public class ShoppingCart implements ProductStockContainer {
     }
 
     /**
-     *
+     *  Removes specific amount of a product's stock based on product ID
+     * @param product Product, the specific product
+     * @param amountOfProduct int, the amount of stock being removed
+     * @return boolean value true for successful remove or false if product does not exist
      */
     public int removeProductQuantity(Product product, int amountOfProduct){
         int i = 0;
@@ -109,13 +117,22 @@ public class ShoppingCart implements ProductStockContainer {
         return this.itemsInCart;
     }
 
+    /**
+     * Not implemented  version of getProduct quantity
+     * @param product Product, product to get the quantity of
+     * @return -1 because it is not implemented
+     */
     @Override
     public int getProductQuantity(Product product) {
-        return 0;
+        return -1;
     }
 
+    /**
+     * not implemented verions of getNumProducts
+     * @return -1 because it is not implemented
+     */
     @Override
     public int getNumOfProducts() {
-        return 0;
+        return -1;
     }
 }
