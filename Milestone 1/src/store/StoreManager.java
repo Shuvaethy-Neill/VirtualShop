@@ -8,7 +8,7 @@ import java.util.HashMap;
 // Partner: Andre Hazim 101141843
 
 /**
- * This store.StoreManager class is the "brain" of the system and for this
+ * This StoreManager class is the "brain" of the system and for this
  * milestone it manages the Inventory and ShoppingCarts.
  * @author Shuvaethy Neill
  *
@@ -45,9 +45,9 @@ public class StoreManager {
     }
 
     /**
-     * This method provides access to the inventory that the store.StoreManager is managing
+     * This method provides access to the inventory that the StoreManager is managing
      *
-     * @return store.Inventory, the store.Inventory being managed
+     * @return store.Inventory, the Inventory being managed
      */
 
     public ArrayList<Product> getAvailableProducts(){
@@ -156,7 +156,7 @@ public class StoreManager {
     /**
      * This method takes an order in the form of two parallel arrayLists and completes the store transaction
      *
-     * @param items ArrayList<store.Product>, the products being purchased
+     * @param items ArrayList<Product>, the products being purchased
      * @param quantities ArrayList<Integer>, the quantities of each product being purchased
      * @return double, the total price for order purchase
      */
