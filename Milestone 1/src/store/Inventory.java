@@ -7,9 +7,9 @@ package store;
  * remove products. As well as get information about of products
  * @author Andre Hazim
  *
- * @version 1.0
+ * @version 4.0
  *
- * @since 2021-02-06
+ * @since 2021-04-08
  *
  */
 
@@ -40,7 +40,7 @@ public class Inventory implements ProductStockContainer{
     }
 
     /**
-     * Gets stock on product given product id
+     * Gets stock on product given product
      * @param product Product: the product you want to the stock of
      * @return int, the stock available for the product
      */
@@ -63,7 +63,7 @@ public class Inventory implements ProductStockContainer{
     }
 
     /**
-     * Adds a stock to a product given a name and a stock amount
+     * Adds a stock to a product given a product and a stock amount
      * @param product Product, the specific product
      * @param stock int, the specific amount of stock being added
      */
@@ -96,10 +96,10 @@ public class Inventory implements ProductStockContainer{
     }
 
     /**
-     *  Removes specific amount of a product's stock based on product ID
+     *  Removes specific amount of a product's stock given a product
      * @param product Product, the specific product
      * @param stockRemove int, the amount of stock being removed
-     * @return boolean value true for successful remove or false if product does not exist
+     * @return int, value of stock removed
      */
     public int removeProductQuantity(Product product, int stockRemove){
 
