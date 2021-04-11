@@ -6,7 +6,7 @@ import java.util.ArrayList;
 // Edited by: Shuvaethy Neill 101143478
 
 /**
- * This store.ShoppingCart class models a user's shopping cart
+ * This ShoppingCart class models a user's shopping cart
  *
  * @author Andre Hazim
  *
