@@ -228,6 +228,7 @@ public class StoreView {
                 productLabels[productId-1].setText(("Price: " +storeManager.getAvailableProducts().get(productId-1).getPrice() + " | Stock: " +
                         storeManager.checkInventoryStock(storeManager.getAvailableProducts().get(productId-1))));
                 removeFromCart.setEnabled(false);
+                buttonArray[productId-1][0].setEnabled(true);
             }
         });
         return removeFromCart;
