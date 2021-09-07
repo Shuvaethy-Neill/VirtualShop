@@ -62,7 +62,7 @@ public class StoreView {
         }
         this.buttonArray = new JButton[5][];
         this.productLabels = new JLabel[5];
-        this.productImages = new String[]{"https://static.bhphoto.com/images/images150x150/1589222193_1560964.jpg","https://staging.lifeloop.com.au/wp-content/uploads/2020/04/intel-core-lga-1151-cpu-processor-chipset-top-150x150.jpg",
+        this.productImages = new String[]{"https://static.bhphoto.com/images/images150x150/1589222193_1560964.jpg","https://a-power.com/app/uploads/2019/07/70270720_5044831322-150x150.jpeg",
                 "http://www.yeargoo.com/wp-content/uploads/2020/07/Note-Book-Computer-SODIMM-RAM-producer-1-150x150.jpg", "https://www.ilounge.com/wp-content/uploads/2020/02/Get-More-Storage-Space-with-the-110-Seagate-BarraCuda-6TB-Hard-Drive-150x150.png",
                 "https://www.pc-canada.com/dd2/img/item/B-150x150/1/14621.jpg"};
         this.storeManager = storeManager;
