@@ -1,6 +1,7 @@
 # VirtualShop
 
 Project created by Shuvaethy Neill and Andre Hazim
+![GUI](https://github.com/Shuvaethy-Neill/VirtualShop/blob/main/Milestone%201/storeView.png)
 
 DATE: April 13, 2021
 
